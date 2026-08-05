@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BreakTime Pro - Departemen Bedroom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { primary: '#2563eb', secondary: '#1e40af', dark: '#0f172a' } } } }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0.3; } }
+        .glow-text { text-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
+        .spin-slow { animation: spin 3s linear infinite; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: HALAMAN LOGIN -->
+    <!-- ========================================== -->
+    <div id="loginView" class="min-h-screen flex items-center justify-center bg-dark p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <i class="fa-solid fa-cloud-arrow-down text-5xl text-primary mb-3"></i>
+                <h1 class="text-2xl font-bold text-gray-800">BreakTime Pro</h1>
+                <p class="text-sm text-gray-500 mt-1">Sistem Manajemen Waktu (Cloud Sync)</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Otoritas (Role)</label>
+                    <select id="loginRole" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:bg-gray-100">
+                        <option value="">-- Menghubungkan ke Database... --</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Karyawan</label>
+                    <select id="loginSelect" required disabled class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:bg-gray-100">
+                        <option value="">-- Pilih Otoritas Terlebih Dahulu --</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">PIN Akses</label>
+                    <div class="relative">
+                        <input type="password" id="loginPin" required placeholder="Masukkan PIN" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                        <i class="fa-solid fa-key absolute right-4 top-4 text-gray-400"></i>
+                    </div>
+                </div>
+                <button type="submit" id="btnLoginBtn" disabled class="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-secondary transition shadow-md opacity-50 cursor-not-allowed mt-2">
+                    Tunggu Sebentar...
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: APLIKASI UTAMA (DASHBOARD) -->
+    <!-- ========================================== -->
+    <div id="appView" class="hidden flex-col min-h-screen">
+        <nav class="bg-primary text-white shadow-md">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-stopwatch text-2xl"></i>
+                    <h1 class="text-xl font-bold tracking-wide hidden sm:block">BreakTime Pro</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <div id="navUserName" class="font-bold text-sm">Nama</div>
+                        <div id="navUserRole" class="text-xs text-blue-200">Role</div>
+                    </div>
+                    <button onclick="logout()" class="bg-blue-800 hover:bg-blue-900 px-3 py-2 rounded text-sm transition shadow-inner" title="Keluar">
+                        <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-8">
+            <div class="flex space-x-2 mb-6 border-b border-gray-200">
+                <button onclick="switchTab('listTab')" id="btn-listTab" class="py-2 px-4 text-primary border-b-2 border-primary font-semibold transition-colors">
+                    <i class="fa-solid fa-list mr-2"></i>Dashboard Status
+                </button>
+                <button onclick="switchTab('formTab')" id="btn-formTab" class="py-2 px-4 text-gray-500 hover:text-primary transition-colors font-semibold">
+                    <i class="fa-solid fa-pen-to-square mr-2"></i>Panel Pribadi
+                </button>
+            </div>
+
+            <!-- Header Indikator Kapasitas -->
+            <div id="capacityHeaders" class="grid grid-cols-2 gap-4 mb-6 transition-all duration-300">
+                <div class="bg-white border rounded-xl p-4 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium">Slot Istirahat SMT</p>
+                        <p id="headcountSMT" class="text-2xl font-bold text-gray-800">0/4</p>
+                    </div>
+                    <i class="fa-solid fa-users text-blue-100 text-4xl"></i>
+                </div>
+                <div class="bg-white border rounded-xl p-4 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium">Slot Istirahat PS</p>
+                        <p id="headcountPS" class="text-2xl font-bold text-gray-800">0/3</p>
+                    </div>
+                    <i class="fa-solid fa-user-tie text-purple-100 text-4xl"></i>
+                </div>
+            </div>
+
+            <div id="notification" class="hidden mb-4 p-4 rounded-md text-white font-medium transition-all duration-300 shadow-md"></div>
+
+            <!-- TAB 1: DASHBOARD (RIWAYAT) -->
+            <section id="listTab" class="tab-content active bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-4 mb-4 gap-4">
+                    <h2 class="text-xl font-bold text-gray-800">Monitoring Istirahat Hari Ini</h2>
+                    <!-- TOMBOL REFRESH UTAMA -->
+                    <button id="btnRefresh" onclick="refreshData()" class="bg-primary hover:bg-secondary text-white py-2 px-4 rounded-lg transition shadow-md font-bold text-sm flex items-center w-full md:w-auto justify-center">
+                        <i class="fa-solid fa-arrows-rotate mr-2"></i> Segarkan Data Cloud
+                    </button>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[900px]">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-600 text-sm uppercase tracking-wider">
+                                <th class="p-4 border-b font-semibold">Karyawan</th>
+                                <th class="p-4 border-b font-semibold">Status & Timer</th>
+                                <th class="p-4 border-b font-semibold">Alasan</th>
+                                <th class="p-4 border-b font-semibold text-center w-48">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="text-gray-700 text-sm"></tbody>
+                    </table>
+                </div>
+                
+                <div id="emptyState" class="hidden text-center py-16">
+                    <div class="text-gray-300 mb-3"><i class="fa-solid fa-mug-hot text-6xl"></i></div>
+                    <p class="text-gray-500 font-medium">Belum ada aktivitas istirahat hari ini.</p>
+                </div>
+            </section>
+
+            <!-- TAB 2: FORM / MONITOR PRIBADI -->
+            <section id="formTab" class="tab-content bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100">
+                <div id="statusQuotaPanel" class="mb-4 hidden transition-all"></div>
+
+                <form id="formIzin" class="space-y-6">
+                    <!-- Judul Form dengan Tombol Refresh Internal -->
+                    <div class="flex justify-between items-center border-b pb-3 mb-6">
+                        <h2 class="text-xl font-bold text-gray-800">Form Pengajuan Istirahat</h2>
+                        <button type="button" onclick="refreshData(false)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 py-1.5 px-3 rounded transition shadow-sm border text-sm flex items-center">
+                            <i class="fa-solid fa-arrows-rotate mr-2"></i> Segarkan Data
+                        </button>
+                    </div>
+                    
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <label class="flex items-start cursor-pointer">
+                            <input type="checkbox" id="isDarurat" class="mt-1 w-5 h-5 text-red-600 border-gray-300 rounded focus:ring-red-500" onchange="toggleDaruratMode()">
+                            <div class="ml-3">
+                                <span class="block text-red-800 font-bold">Ajukan Izin Khusus / Darurat</span>
+                                <span class="block text-xs text-red-600 mt-1">Gunakan jika slot penuh, butuh waktu lebih dari sisa saldo, atau jatah habis. Harus disetujui <b>Manager (MGR)</b>.</span>
+                            </div>
+                        </label>
+                        
+                        <div id="daruratInputs" class="hidden mt-4 pt-4 border-t border-red-200">
+                            <label class="block text-sm font-bold text-red-700 mb-1">Durasi Darurat Dibutuhkan (Menit)</label>
+                            <input type="number" id="waktuDarurat" min="1" placeholder="Contoh: 60" class="w-full md:w-1/2 px-4 py-2 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 outline-none bg-white">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
+                            <input type="text" id="formNama" readonly class="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed outline-none font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">NIK & Departemen</label>
+                            <input type="text" id="formNikDept" readonly class="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed outline-none">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Alasan</label>
+                            <select id="alasan" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-white">
+                                <option value="">-- Pilih Alasan --</option>
+                                <option value="Makan Siang">Makan Siang</option>
+                                <option value="Ibadah">Ibadah</option>
+                                <option value="Makan & Ibadah">Makan & Ibadah</option>
+                                <option value="Keperluan Medis / Pribadi">Keperluan Medis / Pribadi</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-4 border-t mt-6">
+                        <button type="submit" id="btnSubmit" class="px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-secondary transition shadow-md flex items-center">
+                            <i class="fa-solid fa-paper-plane mr-2"></i> Ajukan Istirahat
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // =========================================================================
+        // URL GOOGLE SCRIPT
+        // =========================================================================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz6sxdi0ymYZlTCWs2tP_At2U5E8GWkLm-2fD2BREXOr8xFCmC0S94Z4QkxTrvrcGF0Pw/exec'; 
+        
+        const STORAGE_KEY = 'DATA_IZIN_KARYAWAN';
+        const MAX_SMT = 4;
+        const MAX_PS = 3;
+        const DAILY_TIME_POOL = 100; 
+        const MAX_SESSION_TIME = 50; 
+        
+        let databaseKaryawan = []; 
+        let currentUser = null;
+        let userQuotaStatus = null; 
+        let activeHeadcounts = { smt: 0, ps: 0 };
+        let pollingInterval = null; // Variabel Auto-Refresh
+
+        // ==========================================
+        // SISTEM FORMAT TANGGAL YANG KONSISTEN
+        // ==========================================
+        function getTodayString() {
+            const d = new Date();
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function isToday(dateStr) {
+            if (!dateStr) return false;
+            if (dateStr === getTodayString()) return true;
+            const today = new Date();
+            if (dateStr === today.toLocaleDateString('id-ID')) return true;
+            const itemDate = new Date(dateStr);
+            if (!isNaN(itemDate.getTime())) {
+                return itemDate.getDate() === today.getDate() &&
+                       itemDate.getMonth() === today.getMonth() &&
+                       itemDate.getFullYear() === today.getFullYear();
+            }
+            return false;
+        }
+
+        function formatTimeDisplay(timeStr) {
+            if (!timeStr || timeStr === '-') return '-';
+            const match = String(timeStr).match(/\b\d{2}:\d{2}\b/);
+            return match ? match[0] : timeStr;
+        }
+
+        // ==========================================
+        // SISTEM INIT & FETCH CLOUD
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchDatabase();
+        });
+
+        async function fetchDatabase() {
+            const select = document.getElementById('loginSelect');
+            const btn = document.getElementById('btnLoginBtn');
+            
+            try {
+                if (!SCRIPT_URL || SCRIPT_URL === 'MASUKKAN_URL_GOOGLE_SCRIPT_ANDA_DISINI') {
+                    throw new Error("URL Script belum dikonfigurasi.");
+                }
+
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
+                
+                if (data.error) throw new Error(data.error);
+                if (data.karyawan && data.karyawan.length > 0) databaseKaryawan = data.karyawan; 
+                
+                if (data.riwayat) {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data.riwayat.reverse()));
+                }
+                setupLoginDropdowns(false);
+
+            } catch (error) {
+                console.warn("Mode Lokal Aktif:", error.message);
+                setupLoginDropdowns(true);
+            }
+        }
+
+        async function refreshData(isSilent = false) {
+            const btn = document.getElementById('btnRefresh');
+            let originalHTML = "";
+            if (!isSilent && btn) {
+                originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyinkronkan...';
+                btn.disabled = true;
+            }
+
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
+                if (data.riwayat) {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data.riwayat.reverse()));
+                    
+                    // Deteksi perubahan status untuk Auto-Transition
+                    const oldStatus = userQuotaStatus;
+                    updateHeadcounts();
+                    
+                    if(currentUser) {
+                        userQuotaStatus = getEmployeeStatus(currentUser.nik);
+                        
+                        const wasPending = oldStatus && oldStatus.isPendingOrActive && !oldStatus.activeItemData;
+                        const wasActive = oldStatus && !!oldStatus.activeItemData;
+                        const isNowActive = !!userQuotaStatus.activeItemData;
+                        const isNowPending = userQuotaStatus.isPendingOrActive && !userQuotaStatus.activeItemData;
+                        const isNowNormal = !userQuotaStatus.isPendingOrActive && !userQuotaStatus.activeItemData;
+
+                        // TRANSISI CERDAS (Auto Pindah Layar)
+                        if (wasPending && isNowActive) {
+                            showNotification("Hore! Izin Anda disetujui PS/MGR.", "success");
+                            checkQuotaAndUpdateUI(); 
+                        } 
+                        else if (wasPending && isNowNormal) {
+                            showNotification("Pengajuan izin Anda ditolak/dibatalkan.", "error");
+                            checkQuotaAndUpdateUI(); 
+                        }
+                        else if (wasActive && isNowNormal) {
+                            showNotification("Masa istirahat selesai! Status Anda telah ditutup.", "success");
+                            checkQuotaAndUpdateUI();
+                        }
+                        else {
+                            if(!isSilent) checkQuotaAndUpdateUI(); 
+                        }
+                    }
+                    renderTable();
+                }
+            } catch(e) {
+                if(!isSilent) showNotification('Gagal menyinkronkan data dari cloud.', 'error');
+            } finally {
+                if (!isSilent && btn) {
+                    btn.innerHTML = originalHTML;
+                    btn.disabled = false;
+                }
+            }
+        }
+
+        // --- SISTEM AUTO POLLING SAAT AKTIF/PENDING ---
+        function startStatusPolling() {
+            if (!pollingInterval) {
+                pollingInterval = setInterval(() => refreshData(true), 7000); 
+            }
+        }
+
+        function stopStatusPolling() {
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+                pollingInterval = null;
+            }
+        }
+
+        // ==========================================
+        // SISTEM LOGIN
+        // ==========================================
+        function setupLoginDropdowns(isLocalMode) {
+            const roleSelect = document.getElementById('loginRole');
+            const nameSelect = document.getElementById('loginSelect');
+            const btn = document.getElementById('btnLoginBtn');
+
+            roleSelect.innerHTML = `
+                <option value="">-- Pilih Otoritas ${isLocalMode ? '(Local)' : ''} --</option>
+                <option value="MGR">Manager (MGR)</option>
+                <option value="PS">Supervisor (PS)</option>
+                <option value="SMT">Sales (SMT)</option>
+            `;
+            roleSelect.disabled = false;
+            btn.disabled = false;
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            btn.textContent = 'Masuk ke Sistem';
+
+            roleSelect.addEventListener('change', function(e) {
+                const selectedRole = e.target.value;
+                nameSelect.innerHTML = '<option value="">-- Pilih Nama Karyawan --</option>';
+
+                if (selectedRole) {
+                    const filteredUsers = databaseKaryawan
+                        .filter(k => k.role === selectedRole)
+                        .sort((a, b) => a.nama.localeCompare(b.nama)); 
+
+                    if (filteredUsers.length === 0) {
+                        nameSelect.innerHTML = '<option value="">-- Tidak ada karyawan di Role ini --</option>';
+                        nameSelect.disabled = true;
+                        return;
+                    }
+
+                    filteredUsers.forEach(k => {
+                        const opt = document.createElement('option');
+                        opt.value = k.nik;
+                        opt.textContent = k.nama;
+                        nameSelect.appendChild(opt);
+                    });
+                    nameSelect.disabled = false;
+                } else {
+                    nameSelect.innerHTML = '<option value="">-- Pilih Otoritas Terlebih Dahulu --</option>';
+                    nameSelect.disabled = true;
+                }
+            });
+
+            checkSession();
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nik = document.getElementById('loginSelect').value;
+            const pin = document.getElementById('loginPin').value;
+            if(!nik) return alert('Pilih nama karyawan!');
+
+            const user = databaseKaryawan.find(k => k.nik === nik);
+            if (user && user.pin === String(pin)) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                document.getElementById('loginForm').reset();
+                document.getElementById('loginSelect').innerHTML = '<option value="">-- Pilih Otoritas Terlebih Dahulu --</option>';
+                document.getElementById('loginSelect').disabled = true;
+                checkSession();
+            } else {
+                alert('PIN Salah!');
+            }
+        });
+
+        function checkSession() {
+            const session = localStorage.getItem('currentUser');
+            if (session) {
+                currentUser = JSON.parse(session);
+                
+                const stillExists = databaseKaryawan.find(k => k.nik === currentUser.nik);
+                if(databaseKaryawan.length > 0 && !stillExists) {
+                    logout(); return;
+                }
+
+                document.getElementById('loginView').classList.add('hidden');
+                document.getElementById('appView').classList.remove('hidden');
+                document.getElementById('appView').classList.add('flex');
+                
+                document.getElementById('navUserName').textContent = currentUser.nama;
+                
+                let roleText = 'Sales (SMT)';
+                if(currentUser.role === 'PS') roleText = 'Supervisor (PS)';
+                if(currentUser.role === 'MGR') roleText = 'Manager (MGR)';
+                document.getElementById('navUserRole').textContent = `Otoritas: ${roleText}`;
+                
+                document.getElementById('formNama').value = currentUser.nama;
+                document.getElementById('formNikDept').value = `${currentUser.nik} | ${currentUser.departemen}`;
+                
+                updateHeadcounts();
+                checkQuotaAndUpdateUI();
+                renderTable();
+            } else {
+                document.getElementById('loginView').classList.remove('hidden');
+                document.getElementById('appView').classList.add('hidden');
+                document.getElementById('appView').classList.remove('flex');
+            }
+        }
+
+        function logout() {
+            stopStatusPolling(); 
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            checkSession();
+        }
+
+        // ==========================================
+        // LOGIKA KAPASITAS & STATUS
+        // ==========================================
+        function updateHeadcounts() {
+            const dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            
+            let smt = 0; let ps = 0;
+            
+            dataIzin.forEach(item => {
+                if(isToday(item.tanggal) && item.status === 'Aktif (Sedang Istirahat)') {
+                    if(item.role === 'SMT') smt++;
+                    if(item.role === 'PS') ps++;
+                }
+            });
+
+            activeHeadcounts = { smt, ps };
+            
+            document.getElementById('headcountSMT').textContent = `${smt}/${MAX_SMT}`;
+            document.getElementById('headcountPS').textContent = `${ps}/${MAX_PS}`;
+            
+            document.getElementById('headcountSMT').parentElement.parentElement.className = 
+                `bg-white border rounded-xl p-4 shadow-sm flex items-center justify-between transition-all duration-300 ${smt >= MAX_SMT ? 'border-red-300 bg-red-50' : ''}`;
+            
+            document.getElementById('headcountPS').parentElement.parentElement.className = 
+                `bg-white border rounded-xl p-4 shadow-sm flex items-center justify-between transition-all duration-300 ${ps >= MAX_PS ? 'border-red-300 bg-red-50' : ''}`;
+            
+            if(smt >= MAX_SMT) document.getElementById('headcountSMT').classList.add('text-red-600');
+            else document.getElementById('headcountSMT').classList.remove('text-red-600');
+            
+            if(ps >= MAX_PS) document.getElementById('headcountPS').classList.add('text-red-600');
+            else document.getElementById('headcountPS').classList.remove('text-red-600');
+        }
+
+        function getEmployeeStatus(nik) {
+            const dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const historyToday = dataIzin.filter(item => item.nik === nik && isToday(item.tanggal) && item.status !== 'Dibatalkan');
+            
+            let isPendingOrActive = false;
+            let totalUsedTime = 0;
+            let breakCount = 0;
+            let activeItemData = null;
+
+            historyToday.forEach(item => {
+                if(['Aktif (Sedang Istirahat)', 'Menunggu Persetujuan PS', 'Menunggu Persetujuan MGR'].includes(item.status)) {
+                    isPendingOrActive = true;
+                    if(item.status === 'Aktif (Sedang Istirahat)') activeItemData = item;
+                } else if (item.status.includes('Selesai')) {
+                    totalUsedTime += (item.durasiAktual || 0);
+                    breakCount++;
+                }
+            });
+
+            let sisaWaktuTotal = DAILY_TIME_POOL - totalUsedTime;
+            if(sisaWaktuTotal < 0) sisaWaktuTotal = 0; 
+            let jatahSesiIni = Math.min(MAX_SESSION_TIME, sisaWaktuTotal);
+
+            return { sisaWaktuTotal, jatahSesiIni, isPendingOrActive, activeItemData, totalUsedTime, breakCount };
+        }
+
+        function toggleDaruratMode() {
+            const isDarurat = document.getElementById('isDarurat').checked;
+            const inputs = document.getElementById('daruratInputs');
+            const inputWaktu = document.getElementById('waktuDarurat');
+            
+            if(isDarurat) {
+                inputs.classList.remove('hidden');
+                inputWaktu.setAttribute('required', 'true');
+            } else {
+                inputs.classList.add('hidden');
+                inputWaktu.removeAttribute('required');
+                inputWaktu.value = '';
+            }
+            checkQuotaAndUpdateUI();
+        }
+
+        // ==========================================
+        // UI PANEL PRIBADI
+        // ==========================================
+        function checkQuotaAndUpdateUI() {
+            if(!currentUser) return;
+            const panel = document.getElementById('statusQuotaPanel');
+            const formIzin = document.getElementById('formIzin');
+            const btnSubmit = document.getElementById('btnSubmit');
+            const headerCaps = document.getElementById('capacityHeaders');
+            const isDarurat = document.getElementById('isDarurat').checked;
+            
+            userQuotaStatus = getEmployeeStatus(currentUser.nik); 
+            panel.classList.remove('hidden');
+            formIzin.classList.remove('hidden'); 
+            headerCaps.classList.remove('hidden');
+            btnSubmit.disabled = true; btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
+
+            // --- TAMPILAN 1: SEDANG ISTIRAHAT ---
+            if(userQuotaStatus.activeItemData) {
+                startStatusPolling(); // AKTIFKAN POLLING SAAT ISTIRAHAT
+                formIzin.classList.add('hidden'); 
+                headerCaps.classList.add('hidden'); 
+                
+                let actionBtnHTML = '';
+                if(currentUser.role === 'SMT') {
+                    actionBtnHTML = `<div class="mt-8 bg-black/20 p-4 rounded-xl inline-block text-yellow-300 font-medium">
+                        <i class="fa-solid fa-triangle-exclamation mr-2"></i> Lapor ke Supervisor (PS) Anda jika sudah kembali bekerja.
+                    </div>`;
+                } else {
+                    actionBtnHTML = `<div class="mt-8">
+                        <button onclick="aksiReturn('${userQuotaStatus.activeItemData.id}')" class="px-8 py-4 bg-red-500 hover:bg-red-600 text-white text-lg font-bold rounded-full shadow-lg transition-transform transform hover:scale-105">
+                            <i class="fa-solid fa-stopwatch mr-2"></i> Akhiri Istirahat Sekarang
+                        </button>
+                    </div>`;
+                }
+
+                panel.className = "mb-4 p-6 md:p-12 rounded-3xl bg-gradient-to-br from-blue-900 via-slate-800 to-black border border-blue-700 shadow-2xl transition-all text-center relative";
+                panel.innerHTML = `
+                    <!-- TOMBOL REFRESH PRIBADI DI SUDUT -->
+                    <div class="flex justify-between items-center w-full mb-6">
+                        <div class="text-blue-300 font-bold uppercase tracking-widest text-sm flex items-center">
+                            <i class="fa-solid fa-person-walking-luggage mr-2"></i>Status Anda
+                        </div>
+                        <button onclick="refreshData(false)" class="text-xs bg-blue-800 hover:bg-blue-700 text-blue-100 px-4 py-2 rounded-full transition shadow border border-blue-600 cursor-pointer flex items-center z-10 hover:scale-105">
+                            <i class="fa-solid fa-arrows-rotate mr-1"></i> Segarkan Layar
+                        </button>
+                    </div>
+
+                    <h2 class="text-2xl md:text-4xl text-white font-bold mb-6">Masa Istirahat Berjalan</h2>
+                    
+                    <div class="bg-black/40 border border-blue-900/50 rounded-2xl p-6 md:p-10 inline-block w-full max-w-lg shadow-inner">
+                        <div class="text-blue-200 text-sm mb-2 uppercase tracking-wider font-semibold">Durasi Istirahat:</div>
+                        <div class="live-timer text-7xl md:text-8xl font-mono text-white font-black tracking-tighter my-2 glow-text" data-timestamp="${userQuotaStatus.activeItemData.timestampMulai}">
+                            00<span class="blink">:</span>00
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex flex-col md:flex-row justify-center gap-4 text-sm">
+                        <div class="bg-blue-950/60 border border-blue-800/50 px-6 py-3 rounded-full text-blue-200">
+                            <i class="fa-regular fa-clock mr-2"></i> Jam Mulai: <span class="text-white font-bold ml-1">${formatTimeDisplay(userQuotaStatus.activeItemData.jamMulai)}</span>
+                        </div>
+                        <div class="bg-red-950/40 border border-red-900/50 px-6 py-3 rounded-full text-red-200">
+                            <i class="fa-solid fa-hourglass-end mr-2"></i> Batas Waktu: <span class="text-red-400 font-bold ml-1">${formatTimeDisplay(userQuotaStatus.activeItemData.batasKembali)}</span>
+                        </div>
+                    </div>
+                    ${actionBtnHTML}
+                `;
+                return;
+            }
+
+            // --- TAMPILAN 2: PENDING APPROVAL ---
+            if(userQuotaStatus.isPendingOrActive) {
+                startStatusPolling(); // AKTIFKAN POLLING SAAT PENDING
+                panel.className = "mb-4 p-8 rounded-2xl bg-yellow-50 border border-yellow-300 shadow-lg transition-all text-center";
+                panel.innerHTML = `
+                    <i class="fa-solid fa-hourglass-half text-5xl text-yellow-500 mb-4 block spin-slow"></i>
+                    <span class="text-yellow-800 text-2xl font-bold block mb-2">Pengajuan Sedang Diproses</span>
+                    <p class="text-base text-yellow-700 mb-6">Menunggu Supervisor (PS) menyetujui pengajuan Anda. <br>Halaman ini akan otomatis beralih jika sudah disetujui.</p>
+                    <button type="button" onclick="refreshData(false)" class="bg-yellow-200 hover:bg-yellow-300 text-yellow-800 font-bold py-2 px-6 rounded-lg transition shadow-sm">
+                        <i class="fa-solid fa-arrows-rotate mr-2"></i> Cek Manual
+                    </button>
+                `;
+                formIzin.classList.add('hidden'); 
+                return;
+            }
+
+            // --- TAMPILAN 3: NORMAL (SIAP MENGAJUKAN) ---
+            stopStatusPolling(); // MATIKAN POLLING JIKA NORMAL (Hemat Baterai/Koneksi)
+            panel.className = "mb-4 p-4 rounded-lg bg-blue-50 border border-blue-100 shadow-sm transition-all";
+
+            if(currentUser.role === 'MGR') {
+                panel.innerHTML = `<span class="text-blue-700 font-bold">Mode Manager: Bebas batasan pengajuan & kapasitas.</span>`;
+                btnSubmit.disabled = false; btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+                return;
+            }
+
+            if(isDarurat) {
+                panel.innerHTML = `
+                    <span class="text-red-700 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> Mode Darurat Aktif!</span>
+                    <p class="text-sm text-red-600 mt-1">Mengabaikan aturan kuota harian dan kapasitas ruangan. Diteruskan ke <b>Manager</b>.</p>`;
+                btnSubmit.disabled = false; btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+                return;
+            }
+
+            let isKapasitasPenuh = false;
+            if(currentUser.role === 'SMT' && activeHeadcounts.smt >= MAX_SMT) isKapasitasPenuh = true;
+            if(currentUser.role === 'PS' && activeHeadcounts.ps >= MAX_PS) isKapasitasPenuh = true;
+
+            if(isKapasitasPenuh) {
+                panel.innerHTML = `
+                    <span class="text-red-600 font-bold"><i class="fa-solid fa-ban"></i> Slot Kapasitas Ruangan Penuh!</span>
+                    <p class="text-sm text-red-500 mt-1">Harap tunggu rekan lain selesai, atau centang <b>Izin Darurat</b> (Butuh MGR).</p>`;
+                return;
+            }
+            
+            if(userQuotaStatus.sisaWaktuTotal <= 0) {
+                panel.innerHTML = `<span class="text-red-600 font-bold"><i class="fa-solid fa-ban"></i> Saldo Waktu 100 Menit hari ini habis!</span>
+                <p class="text-sm text-red-500 mt-1">Anda sudah menggunakan ${userQuotaStatus.totalUsedTime} menit. Gunakan Darurat jika perlu.</p>`;
+                return;
+            }
+
+            let infoWaktuText = `<div class="text-sm mt-1 text-blue-700">Saldo Tersedia: <b>${userQuotaStatus.sisaWaktuTotal}m</b> (Dari ${DAILY_TIME_POOL}m)</div>`;
+            infoWaktuText += `<div class="text-sm text-blue-700">Durasi Maks Sesi Ini: <b>${userQuotaStatus.jatahSesiIni}m</b></div>`;
+            infoWaktuText += `<div class="text-xs text-blue-500 italic mt-1">*Anda telah beristirahat ${userQuotaStatus.breakCount} kali (Total ${userQuotaStatus.totalUsedTime}m) hari ini.</div>`;
+
+            panel.innerHTML = `
+                <div class="flex items-start text-blue-800">
+                    <i class="fa-solid fa-circle-check text-2xl mr-3 mt-1"></i>
+                    <div>
+                        <div class="font-bold mb-1">Status: Siap Mengajukan</div>
+                        ${infoWaktuText}
+                    </div>
+                </div>`;
+            btnSubmit.disabled = false; btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+
+        // ==========================================
+        // LOGIKA WAKTU & SUBMIT
+        // ==========================================
+        function getCurrentTimeStr() {
+            const now = new Date();
+            return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+        }
+
+        function calculateDeadline(startTimeStr, jatahMenit) {
+            const [hours, minutes] = startTimeStr.split(':').map(Number);
+            const date = new Date();
+            date.setHours(hours); date.setMinutes(minutes + parseInt(jatahMenit));
+            return String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0');
+        }
+
+        function calculateDurationInMinutes(start, end) {
+            start = formatTimeDisplay(start);
+            end = formatTimeDisplay(end);
+            const d1 = new Date(`01/01/2000 ${start}`);
+            let d2 = new Date(`01/01/2000 ${end}`);
+            if (d2 < d1) d2 = new Date(`01/02/2000 ${end}`); 
+            return Math.round((d2.getTime() - d1.getTime()) / 60000);
+        }
+
+        document.getElementById('formIzin').addEventListener('submit', function(e) {
+            e.preventDefault();
+            updateHeadcounts();
+            checkQuotaAndUpdateUI();
+            
+            const btnSubmit = document.getElementById('btnSubmit');
+            if(btnSubmit.disabled) return;
+
+            const isDarurat = document.getElementById('isDarurat').checked;
+            let statusTujuan = isDarurat ? 'Menunggu Persetujuan MGR' : 'Menunggu Persetujuan PS';
+            let durasiFinal = userQuotaStatus.jatahSesiIni;
+
+            if(isDarurat) {
+                const inputWaktu = document.getElementById('waktuDarurat').value;
+                if(inputWaktu) durasiFinal = parseInt(inputWaktu);
+            }
+
+            if(currentUser.role === 'MGR') {
+                statusTujuan = 'Aktif (Sedang Istirahat)';
+                durasiFinal = MAX_SESSION_TIME; 
+            }
+
+            const dataBaru = {
+                id: Date.now().toString(),
+                tanggal: getTodayString(), 
+                nik: currentUser.nik,
+                nama: currentUser.nama,
+                role: currentUser.role, 
+                departemen: currentUser.departemen,
+                alasan: document.getElementById('alasan').value,
+                jamMulai: currentUser.role === 'MGR' ? getCurrentTimeStr() : '-',
+                batasKembali: currentUser.role === 'MGR' ? calculateDeadline(getCurrentTimeStr(), durasiFinal) : '-',
+                timestampMulai: currentUser.role === 'MGR' ? Date.now() : null,
+                jatahWaktu: durasiFinal, 
+                isDarurat: isDarurat,
+                jamKembali: null,
+                durasiAktual: null,
+                kelebihanWaktu: 0, 
+                status: statusTujuan,
+                actionBy: "-" 
+            };
+
+            let dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            dataIzin.unshift(dataBaru);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(dataIzin));
+            sendToGoogleSheets(dataBaru);
+
+            document.getElementById('formIzin').reset();
+            document.getElementById('isDarurat').checked = false;
+            toggleDaruratMode();
+            
+            if(currentUser.role === 'MGR') showNotification(`Izin Anda otomatis aktif.`);
+            else showNotification(`Berhasil diajukan. Menunggu persetujuan.`);
+            
+            updateHeadcounts();
+            checkQuotaAndUpdateUI(); 
+        });
+
+        // ==========================================
+        // FUNGSI OTORITAS APPROVAL
+        // ==========================================
+        function aksiApprove(id, allowedRole) {
+            if(currentUser.role !== allowedRole) return;
+            
+            let dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const index = dataIzin.findIndex(item => item.id === id);
+            
+            if (index !== -1) {
+                const item = dataIzin[index];
+
+                if(item.nik === currentUser.nik) {
+                    showNotification("Akses ditolak! Anda tidak bisa menyetujui izin Anda sendiri.", "error"); return;
+                }
+
+                updateHeadcounts();
+                if(!item.isDarurat) {
+                    if(item.role === 'SMT' && activeHeadcounts.smt >= MAX_SMT) {
+                        showNotification("Gagal! Slot SMT saat ini sudah penuh (4/4)!", "error"); return;
+                    }
+                    if(item.role === 'PS' && activeHeadcounts.ps >= MAX_PS) {
+                        showNotification("Gagal! Slot PS saat ini sudah penuh (3/3)!", "error"); return;
+                    }
+                }
+
+                const jamMulai = getCurrentTimeStr();
+                const batas = calculateDeadline(jamMulai, item.jatahWaktu);
+
+                item.status = 'Aktif (Sedang Istirahat)';
+                item.jamMulai = jamMulai;
+                item.batasKembali = batas;
+                item.timestampMulai = Date.now(); 
+                item.actionBy = currentUser.nama;
+
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(dataIzin));
+                updateHeadcounts();
+                renderTable();
+                sendToGoogleSheets(item);
+                showNotification(`Disetujui! Timer ${item.nama} mulai berjalan.`);
+            }
+        }
+
+        function aksiCancel(id, allowedRole) {
+            if(currentUser.role !== allowedRole && currentUser.role !== 'MGR') return;
+            if(!confirm('Anda yakin ingin membatalkan request ini?')) return;
+
+            let dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const index = dataIzin.findIndex(item => item.id === id);
+            
+            if (index !== -1) {
+                const item = dataIzin[index];
+                if(item.nik === currentUser.nik && currentUser.role !== 'MGR') {
+                    showNotification("Akses ditolak! Pembatalan harus dilakukan pihak lain.", "error"); return;
+                }
+                
+                item.status = 'Dibatalkan';
+                item.actionBy = currentUser.nama;
+
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(dataIzin));
+                updateHeadcounts();
+                renderTable();
+                if(item.nik === currentUser.nik) checkQuotaAndUpdateUI(); 
+                sendToGoogleSheets(item);
+                showNotification(`Request dibatalkan.`, 'error');
+            }
+        }
+
+        function aksiReturn(id) {
+            let dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const index = dataIzin.findIndex(item => item.id === id);
+            
+            if (index !== -1) {
+                const item = dataIzin[index];
+                
+                const jamKembaliReal = getCurrentTimeStr();
+                const durasiAktual = calculateDurationInMinutes(item.jamMulai, jamKembaliReal);
+                
+                let kelebihan = durasiAktual - item.jatahWaktu;
+                if(kelebihan < 0) kelebihan = 0; 
+
+                item.jamKembali = jamKembaliReal;
+                item.durasiAktual = durasiAktual;
+                item.kelebihanWaktu = kelebihan;
+                item.status = kelebihan > 0 ? 'Selesai (Terlambat)' : 'Selesai (Tepat Waktu)';
+                item.actionBy = currentUser.nama;
+
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(dataIzin));
+                updateHeadcounts();
+                renderTable();
+                
+                if(item.nik === currentUser.nik) {
+                    checkQuotaAndUpdateUI();
+                }
+
+                sendToGoogleSheets(item);
+
+                if(kelebihan > 0) showNotification(`Tercatat! Terlambat ${kelebihan} menit.`, 'error');
+                else showNotification(`Ditutup. Saldo terpotong ${durasiAktual}m.`);
+            }
+        }
+
+        // ==========================================
+        // RENDER TABEL ADMIN
+        // ==========================================
+        function renderTable() {
+            if(!currentUser) return;
+            const tableBody = document.getElementById('tableBody');
+            const emptyState = document.getElementById('emptyState');
+            let dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            
+            dataIzin = dataIzin.filter(i => isToday(i.tanggal));
+            tableBody.innerHTML = ''; 
+
+            if (dataIzin.length === 0) {
+                emptyState.classList.remove('hidden');
+                tableBody.parentElement.parentElement.classList.add('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                tableBody.parentElement.parentElement.classList.remove('hidden');
+
+                dataIzin.forEach(item => {
+                    let auditText = '';
+                    if(item.actionBy && item.actionBy !== "-") {
+                        let labelAksi = "";
+                        if(item.status === 'Dibatalkan') labelAksi = "Dibatalkan";
+                        else if(item.status.includes('Selesai')) labelAksi = "Ditutup";
+                        else if(item.status === 'Aktif (Sedang Istirahat)') labelAksi = "Disetujui";
+                        
+                        auditText = `<div class="text-[11px] text-gray-500 mt-1.5 pt-1.5 border-t border-gray-200 border-dashed">
+                                        <i class="fa-solid fa-user-shield text-gray-400"></i> ${labelAksi} oleh: <b>${item.actionBy}</b>
+                                     </div>`;
+                    }
+
+                    let statusHTML = '';
+                    if(item.status === 'Menunggu Persetujuan PS') {
+                        statusHTML = `<span class="inline-block bg-yellow-100 text-yellow-800 py-1 px-2 rounded font-bold text-xs"><i class="fa-solid fa-hourglass-half"></i> Menunggu PS</span>`;
+                    } else if(item.status === 'Menunggu Persetujuan MGR') {
+                        statusHTML = `<span class="inline-block bg-red-100 text-red-700 py-1 px-2 rounded font-bold text-xs animate-pulse"><i class="fa-solid fa-triangle-exclamation"></i> Menunggu MGR</span>`;
+                    } else if (item.status === 'Aktif (Sedang Istirahat)') {
+                        let timerDisplay = item.timestampMulai ? `<div class="text-sm font-mono text-red-600 font-bold mt-1.5 live-timer bg-red-50 inline-block px-2 py-0.5 rounded border border-red-200 shadow-inner" data-timestamp="${item.timestampMulai}">--:--</div>` : '';
+                        statusHTML = `
+                            <span class="inline-block bg-blue-100 text-blue-700 py-1 px-2 rounded font-bold text-xs mb-1"><i class="fa-solid fa-person-walking"></i> Sedang Aktif</span>
+                            <div class="text-xs text-gray-600 mt-1">Mulai: <b>${formatTimeDisplay(item.jamMulai)}</b> | Batas: <b class="text-red-600">${formatTimeDisplay(item.batasKembali)}</b></div>
+                            ${timerDisplay}
+                            ${auditText}
+                        `;
+                    } else if (item.status.includes('Selesai')) {
+                        const isLate = item.status === 'Selesai (Terlambat)';
+                        statusHTML = `
+                            <span class="inline-block ${isLate ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'} py-1 px-2 rounded font-bold text-xs mb-1">
+                                ${isLate ? `<i class="fa-solid fa-triangle-exclamation"></i> Terlambat (-${item.kelebihanWaktu}m)` : `<i class="fa-solid fa-check"></i> Tepat Waktu`}
+                            </span>
+                            <div class="text-xs text-gray-500 mt-1">Kembali: <b>${formatTimeDisplay(item.jamKembali)}</b> (Sesi ini: ${item.durasiAktual}m)</div>
+                            ${auditText}
+                        `;
+                    } else {
+                        statusHTML = `<span class="inline-block bg-gray-200 text-gray-600 py-1 px-2 rounded font-bold text-xs"><i class="fa-solid fa-ban"></i> Dibatalkan</span> ${auditText}`;
+                    }
+
+                    if(item.isDarurat) statusHTML += `<div class="mt-2"><span class="bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider shadow-sm">DARURAT (${item.jatahWaktu}m)</span></div>`;
+
+                    // --- OTORITAS TOMBOL TABEL ---
+                    let aksiHTML = '';
+                    if (currentUser.role === 'SMT') {
+                        aksiHTML = `<span class="text-xs text-gray-400 italic"><i class="fa-solid fa-lock text-gray-300"></i> Hanya PS/MGR</span>`;
+                    } 
+                    else if (currentUser.role === 'PS') {
+                        if (item.status === 'Menunggu Persetujuan PS') {
+                            if (item.nik !== currentUser.nik) {
+                                aksiHTML = `
+                                    <div class="flex justify-center space-x-2">
+                                        <button onclick="aksiApprove('${item.id}', 'PS')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Setujui"><i class="fa-solid fa-check"></i></button>
+                                        <button onclick="aksiCancel('${item.id}', 'PS')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak"><i class="fa-solid fa-xmark"></i></button>
+                                    </div>`;
+                            } else aksiHTML = `<span class="text-xs text-orange-500 italic font-medium"><i class="fa-solid fa-hand"></i> Tunggu PS Lain</span>`;
+                        } 
+                        else if (item.status === 'Aktif (Sedang Istirahat)') {
+                            if (item.nik !== currentUser.nik) {
+                                aksiHTML = `<div class="flex justify-center space-x-2"><button onclick="aksiReturn('${item.id}')" class="bg-primary hover:bg-secondary text-white px-3 py-1.5 rounded text-sm font-medium shadow-sm"><i class="fa-solid fa-stopwatch mr-1"></i> Kembali</button></div>`;
+                            } else aksiHTML = `<span class="text-xs text-orange-500 italic font-medium"><i class="fa-solid fa-hand"></i> Buka Panel Pribadi</span>`;
+                        } 
+                        else if (item.status === 'Menunggu Persetujuan MGR') {
+                             aksiHTML = `<span class="text-xs text-red-500 italic font-medium"><i class="fa-solid fa-lock"></i> Otoritas MGR</span>`;
+                        }
+                    }
+                    else if (currentUser.role === 'MGR') {
+                        if (item.status === 'Menunggu Persetujuan MGR' || item.status === 'Menunggu Persetujuan PS') {
+                            aksiHTML = `
+                                <div class="flex justify-center space-x-2">
+                                    <button onclick="aksiApprove('${item.id}', 'MGR')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Setujui (Bypass)"><i class="fa-solid fa-check"></i></button>
+                                    <button onclick="aksiCancel('${item.id}', 'MGR')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak (Bypass)"><i class="fa-solid fa-xmark"></i></button>
+                                </div>`;
+                        } else if (item.status === 'Aktif (Sedang Istirahat)') {
+                            aksiHTML = `<button onclick="aksiReturn('${item.id}')" class="bg-primary hover:bg-secondary text-white px-3 py-1.5 rounded text-sm font-medium shadow-sm"><i class="fa-solid fa-stopwatch mr-1"></i> Tandai Kembali</button>`;
+                        }
+                    }
+                    if(aksiHTML === '') aksiHTML = `<span class="text-xs text-gray-400 italic">Selesai</span>`;
+
+                    const row = `
+                        <tr class="border-b hover:bg-blue-50/30 transition">
+                            <td class="p-4">
+                                <div class="font-bold text-gray-800 text-base">${item.nama}</div>
+                                <div class="text-xs text-gray-500 mt-0.5"><span class="font-semibold text-primary">${item.role}</span> | ${item.departemen}</div>
+                            </td>
+                            <td class="p-4 align-top pt-5">${statusHTML}</td>
+                            <td class="p-4 text-gray-600 font-medium align-top pt-5">${item.alasan}</td>
+                            <td class="p-4 text-center align-top pt-5">${aksiHTML}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            }
+        }
+
+        // ==========================================
+        // LIVE TIMER GLOBAL
+        // ==========================================
+        setInterval(() => {
+            const now = Date.now();
+            document.querySelectorAll('.live-timer').forEach(el => {
+                const start = parseInt(el.getAttribute('data-timestamp'));
+                if(!start) return;
+                
+                const diff = Math.floor((now - start) / 1000);
+                if(diff < 0) return;
+                
+                const h = Math.floor(diff / 3600);
+                const m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+                const s = String(diff % 60).padStart(2, '0');
+                
+                if (el.classList.contains('text-7xl') || el.classList.contains('text-8xl')) {
+                    if (h > 0) {
+                        el.innerHTML = `${String(h).padStart(2, '0')}<span class="blink">:</span>${m}<span class="blink">:</span>${s}`;
+                        el.classList.remove('text-7xl', 'md:text-8xl');
+                        el.classList.add('text-5xl', 'md:text-7xl'); 
+                    } else {
+                        el.innerHTML = `${m}<span class="blink">:</span>${s}`;
+                    }
+                } 
+                else {
+                    if(h > 0) el.innerHTML = `<i class="fa-solid fa-stopwatch"></i> ${h}j ${m}m ${s}s`;
+                    else el.innerHTML = `<i class="fa-solid fa-stopwatch"></i> ${m}m ${s}s`;
+                }
+            });
+        }, 1000);
+
+        // ==========================================
+        // UTILITAS UMUM
+        // ==========================================
+        function sendToGoogleSheets(data) {
+            if(!SCRIPT_URL || SCRIPT_URL === 'MASUKKAN_URL_GOOGLE_SCRIPT_ANDA_DISINI') return;
+            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).catch(e=>{});
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById('btn-formTab').className = "py-2 px-4 text-gray-500 hover:text-primary transition-colors font-semibold";
+            document.getElementById('btn-listTab').className = "py-2 px-4 text-gray-500 hover:text-primary transition-colors font-semibold";
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).className = "py-2 px-4 text-primary border-b-2 border-primary font-semibold transition-colors";
+            
+            if (tabId === 'listTab') { updateHeadcounts(); renderTable(); }
+            else { updateHeadcounts(); checkQuotaAndUpdateUI(); }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notif = document.getElementById('notification');
+            notif.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'} mr-2"></i> ${message}`;
+            notif.className = `mb-4 p-4 rounded-md text-white font-medium transition-all duration-300 shadow-md ${type === 'success' ? 'bg-green-600' : 'bg-red-500'}`;
+            notif.classList.remove('hidden');
+            setTimeout(() => notif.classList.add('hidden'), 4500);
+        }
+    </script>
+</body>
+</html>
