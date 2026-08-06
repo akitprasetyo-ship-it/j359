@@ -3,225 +3,483 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BreakTime Pro - Departemen Bedroom</title>
+    <title>Informa Apps - Bedroom Department</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Playfair+Display:wght@600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { theme: { extend: { colors: { primary: '#2563eb', secondary: '#1e40af', dark: '#0f172a' } } } }
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
-        .tab-content.active { display: block; }
+        .bt-tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .bt-tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .blink { animation: blinker 1s linear infinite; }
         @keyframes blinker { 50% { opacity: 0.3; } }
         .glow-text { text-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
         .spin-slow { animation: spin 3s linear infinite; }
+
+        .tabvault-container {
+            --bg:#EAF4FF; --panel:#FFFFFF; --panel-2:#F1F8FF; --border:#D7E7F7;
+            --gold:#3B82C4; --gold-soft:#8FC1EA; --cream:#1F2E3D; --muted:#6B84A0;
+            --sage:#3E9A6D; --sage-soft:rgba(62,154,109,0.12); --copper:#C07A3E;
+            --copper-soft:rgba(192,122,62,0.12); --danger:#C0392B; --danger-soft:rgba(192,57,43,0.10);
+            --radius:14px; --shadow: 0 16px 40px -18px rgba(31,46,61,0.25);
+            background: radial-gradient(1200px 600px at 15% -10%, rgba(59,130,196,0.10), transparent 60%),
+                        radial-gradient(900px 500px at 100% 0%, rgba(59,130,196,0.07), transparent 55%),
+                        var(--bg);
+            color: var(--cream);
+            font-family: 'Manrope', sans-serif;
+            min-height: calc(100vh - 60px);
+            -webkit-font-smoothing: antialiased;
+            text-align: left;
+        }
+        .tabvault-container * { box-sizing: border-box; }
+        .tabvault-container .wrap { max-width: 1180px; margin: 0 auto; padding: 40px 28px 100px; }
+        
+        .tabvault-container header { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; border-bottom:1px solid var(--border); padding-bottom:28px; margin-bottom:44px; flex-wrap:wrap; }
+        .tabvault-container .brand-mark { display:flex; align-items:center; gap:14px; }
+        .tabvault-container .seal { height:46px; width:auto; max-width:150px; border-radius:8px; border:1.5px solid var(--gold); display:flex;align-items:center;justify-content:center; font-family:'Fraunces', serif; font-size:15px;color:var(--gold); flex-shrink:0; position:relative; overflow:hidden; background:var(--panel-2); padding:2px; }
+        .tabvault-container .seal img { height:100%; width:auto; max-width:100%; object-fit:contain; border-radius:6px; display:block; }
+        .tabvault-container .seal::before { content:''; position:absolute;inset:4px; border:1px dashed var(--gold-soft); border-radius:4px; pointer-events:none; }
+        .tabvault-container h1 { font-family:'Playfair Display', serif; font-weight:700; font-size:32px; letter-spacing:0.5px; margin:0; color:var(--cream); }
+        .tabvault-container .eyebrow { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin:0 0 6px; }
+        .tabvault-container .tagline { font-size:13.5px; color:var(--muted); max-width:360px; text-align:right; line-height:1.5; font-style:italic; font-family:'Fraunces', serif; }
+        
+        .tabvault-container .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:46px; }
+        .tabvault-container .stat-card { background:linear-gradient(160deg, var(--panel), var(--panel-2)); border:1px solid var(--border); border-radius:var(--radius); padding:24px 26px; position:relative; overflow:hidden; }
+        .tabvault-container .stat-card::after { content:''; position:absolute; right:-30px;top:-30px; width:110px;height:110px; border-radius:50%; border:1px solid rgba(201,166,75,0.12); }
+        .tabvault-container .stat-label { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+        .tabvault-container .stat-value { font-family:'Fraunces', serif; font-size:44px; font-weight:600; margin:0; line-height:1; }
+        .tabvault-container .stat-value.gold {color:var(--gold);}
+        .tabvault-container .stat-value.sage {color:var(--sage);}
+        .tabvault-container .stat-value.copper {color:var(--copper);}
+        .tabvault-container .stat-foot {font-size:12px;color:var(--muted);margin-top:10px;}
+        
+        .tabvault-container .panel { background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:28px 30px; margin-bottom:36px; box-shadow:var(--shadow); }
+        .tabvault-container .panel h2 { font-family:'Fraunces', serif; font-size:19px; font-weight:600; margin:0 0 4px; color:var(--cream); }
+        .tabvault-container .panel .sub {font-size:12.5px;color:var(--muted);margin:0 0 20px;}
+        .tabvault-container form { display:grid; grid-template-columns:1.3fr 1fr auto; gap:14px; align-items:end; margin:0; }
+        .tabvault-container label { display:block; font-size:11px; letter-spacing:1.4px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+        .tabvault-container input[type=text], .tabvault-container input[type=password], .tabvault-container input[type=date], .tabvault-container select { width:100%; background:#FFFFFF; border:1px solid var(--border); border-radius:8px; padding:12px 14px; color:var(--cream); font-family:'Manrope', sans-serif; font-size:14.5px; outline:none; transition:border-color .15s ease; appearance:none; -webkit-appearance:none; }
+        .tabvault-container select { background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236B84A0'/></svg>"); background-repeat:no-repeat; background-position:right 14px center; padding-right:34px; }
+        .tabvault-container select:disabled {opacity:.5; cursor:not-allowed;}
+        .tabvault-container input[type=text]:focus, .tabvault-container input[type=password]:focus, .tabvault-container input[type=date]:focus, .tabvault-container select:focus {border-color:var(--gold);}
+        .tabvault-container input[type=date] {color-scheme:light;}
+        .tabvault-container button { font-family:'Manrope', sans-serif; font-weight:700; font-size:13.5px; letter-spacing:0.4px; border:none; border-radius:8px; padding:12.5px 22px; cursor:pointer; transition:transform .12s ease, filter .12s ease; white-space:nowrap; }
+        .tabvault-container button:active {transform:translateY(1px);}
+        .tabvault-container .btn-primary { background:linear-gradient(180deg, #5FA3DA, var(--gold)); color:#FFFFFF; }
+        .tabvault-container .btn-primary:hover {filter:brightness(1.07);}
+        .tabvault-container .btn-primary:disabled {opacity:.5;cursor:not-allowed;}
+        .tabvault-container .btn-danger { background:linear-gradient(180deg, #D9695B, var(--danger)); color:#FFFFFF; }
+        .tabvault-container .btn-danger:hover {filter:brightness(1.07);}
+        
+        .tabvault-container .ledger-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px; }
+        .tabvault-container .ledger-head h2 { font-family:'Fraunces', serif; font-size:19px; margin:0; }
+        .tabvault-container .search-box input { background:var(--panel); width:220px; }
+        .tabvault-container table { width:100%; border-collapse:collapse; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+        .tabvault-container thead th { text-align:left; font-size:10.5px; letter-spacing:1.6px; text-transform:uppercase; color:var(--muted); padding:16px 20px; border-bottom:1px solid var(--border); font-weight:600; }
+        .tabvault-container tbody td { padding:16px 20px; font-size:14px; border-bottom:1px solid rgba(58,49,40,0.5); color:var(--cream); vertical-align:middle; }
+        .tabvault-container tbody tr:last-child td {border-bottom:none;}
+        .tabvault-container tbody tr:hover {background:rgba(59,130,196,0.04);}
+        .tabvault-container .peminjam-cell { display:flex; align-items:center; gap:10px; }
+        .tabvault-container .peminjam-foto { width:32px;height:32px; border-radius:50%; object-fit:cover; border:1px solid var(--border); background:var(--panel-2); flex-shrink:0; }
+        .tabvault-container .nomor-tab { font-family:'IBM Plex Mono', monospace; color:var(--gold); font-size:13px; }
+        .tabvault-container .tanggal { font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--muted); }
+        .tabvault-container .stamp { display:inline-flex; align-items:center; gap:6px; padding:5px 12px 5px 10px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; border:1px solid transparent; }
+        .tabvault-container .stamp.dipinjam {background:var(--copper-soft); color:var(--copper); border-color:rgba(192,122,62,0.35);}
+        .tabvault-container .stamp.kembali {background:var(--sage-soft); color:var(--sage); border-color:rgba(124,155,126,0.35);}
+        .tabvault-container .stamp::before {content:'●'; font-size:8px;}
+        .tabvault-container .btn-return { background:transparent; border:1px solid var(--sage); color:var(--sage); padding:7px 14px; font-size:12px; font-weight:600; border-radius:6px; }
+        .tabvault-container .btn-return:hover {background:var(--sage-soft);}
+        .tabvault-container .btn-delete { background:transparent; border:1px solid transparent; color:var(--muted); font-size:16px; padding:4px 8px; }
+        .tabvault-container .btn-delete:hover {color:var(--danger); border-color:rgba(178,81,70,0.4);}
+        .tabvault-container .empty-state { text-align:center; padding:60px 20px; color:var(--muted); }
+        .tabvault-container .empty-state .glyph { font-family:'Fraunces', serif; font-size:30px; color:var(--gold-soft); margin-bottom:10px; }
+        
+        .tabvault-container .toast { position:fixed; bottom:28px;left:50%; transform:translateX(-50%) translateY(20px); background:var(--panel-2); border:1px solid var(--gold); color:var(--cream); padding:13px 22px; border-radius:9px; font-size:13.5px; box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:all .25s ease; z-index:100; }
+        .tabvault-container .toast.show {opacity:1; transform:translateX(-50%) translateY(0);}
+        .tabvault-container .config-banner { background:rgba(192,57,43,0.08); border:1px solid rgba(192,57,43,0.35); color:#8B2E22; padding:14px 20px; border-radius:10px; font-size:13px; margin-bottom:30px; display:none; }
+        .tabvault-container footer { text-align:center; color:var(--muted); font-size:11.5px; margin-top:60px; letter-spacing:1px; }
+        
+        .tabvault-container .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:200; align-items:center; justify-content:center; padding:20px; }
+        .tabvault-container .modal-overlay.show {display:flex;}
+        .tabvault-container .modal-box { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:26px 28px; width:100%; max-width:320px; box-shadow:var(--shadow); }
+        .tabvault-container .modal-box h3 { font-family:'Fraunces', serif; margin:0 0 6px; color:var(--cream); font-size:19px; }
+        .tabvault-container .modal-box .sub { font-size:12.5px; color:var(--muted); margin:0 0 16px; }
+        .tabvault-container .modal-box label { display:block; font-size:11px; letter-spacing:1.4px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+        .tabvault-container .modal-box select, .tabvault-container .modal-box input[type=password] {margin-bottom:6px;}
+        .tabvault-container .modal-error { font-size:12px; color:var(--danger); min-height:16px; margin:0 0 12px; }
+        .tabvault-container .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:12px; }
+        .tabvault-container .btn-secondary { background:transparent; border:1px solid var(--border); color:var(--muted); padding:10px 18px; border-radius:8px; }
+        .tabvault-container .btn-secondary:hover {border-color:var(--muted);}
+
+        @media (max-width:720px){
+            .tabvault-container .stats {grid-template-columns:1fr;}
+            .tabvault-container form {grid-template-columns:1fr;}
+            .tabvault-container header {flex-direction:column; align-items:flex-start;}
+            .tabvault-container .tagline {text-align:left;}
+            .tabvault-container table, .tabvault-container thead, .tabvault-container tbody, .tabvault-container th, .tabvault-container td, .tabvault-container tr {display:block;}
+            .tabvault-container thead {display:none;}
+            .tabvault-container tbody tr { border-bottom:1px solid var(--border); padding:14px 18px; }
+            .tabvault-container tbody td {border:none; padding:6px 0; display:flex; justify-content:space-between; gap:12px;}
+            .tabvault-container tbody td::before {content:attr(data-label); color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:1px;}
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
 
-    <!-- ========================================== -->
-    <!-- VIEW 1: HALAMAN LOGIN -->
-    <!-- ========================================== -->
-    <div id="loginView" class="min-h-screen flex items-center justify-center bg-dark p-4">
-        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
-            <div class="text-center mb-8">
-                <i class="fa-solid fa-cloud-arrow-down text-5xl text-primary mb-3"></i>
-                <h1 class="text-2xl font-bold text-gray-800">BreakTime Pro</h1>
-                <p class="text-sm text-gray-500 mt-1">Sistem Manajemen Waktu (Cloud Sync)</p>
-            </div>
-            
-            <form id="loginForm" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Otoritas (Role)</label>
-                    <select id="loginRole" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:bg-gray-100">
-                        <option value="">-- Menghubungkan ke Database... --</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Karyawan</label>
-                    <select id="loginSelect" required disabled class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:bg-gray-100">
-                        <option value="">-- Pilih Otoritas Terlebih Dahulu --</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">PIN Akses</label>
-                    <div class="relative">
-                        <input type="password" id="loginPin" required placeholder="Masukkan PIN" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
-                        <i class="fa-solid fa-key absolute right-4 top-4 text-gray-400"></i>
-                    </div>
-                </div>
-                <button type="submit" id="btnLoginBtn" disabled class="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-secondary transition shadow-md opacity-50 cursor-not-allowed mt-2">
-                    Tunggu Sebentar...
-                </button>
-            </form>
-        </div>
+    <!-- MASTER NAVIGATION TABS -->
+    <div class="bg-dark text-white p-3 flex justify-center space-x-2 md:space-x-4 shadow-lg sticky top-0 z-50">
+        <button onclick="switchMasterApp('breaktime')" id="mbtn-breaktime" class="px-5 py-2.5 rounded-full font-bold text-sm md:text-base bg-primary text-white shadow-md transition-all">
+            <i class="fa-solid fa-mug-hot mr-1"></i> Sistem Istirahat
+        </button>
+        <button onclick="switchMasterApp('tabvault')" id="mbtn-tabvault" class="px-5 py-2.5 rounded-full font-bold text-sm md:text-base bg-transparent text-gray-300 hover:bg-slate-800 transition-all">
+            <i class="fa-solid fa-tablet-screen-button mr-1"></i> Ledger Peminjaman Tab
+        </button>
     </div>
 
     <!-- ========================================== -->
-    <!-- VIEW 2: APLIKASI UTAMA (DASHBOARD) -->
+    <!-- APP 1: BREAKTIME PRO (SISTEM ISTIRAHAT)    -->
     <!-- ========================================== -->
-    <div id="appView" class="hidden flex-col min-h-screen">
-        <nav class="bg-primary text-white shadow-md">
-            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-                <div class="flex items-center space-x-2">
-                    <i class="fa-solid fa-stopwatch text-2xl"></i>
-                    <h1 class="text-xl font-bold tracking-wide hidden sm:block">BreakTime Pro</h1>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <div class="text-right">
-                        <div id="navUserName" class="font-bold text-sm">Nama</div>
-                        <div id="navUserRole" class="text-xs text-blue-200">Role</div>
-                    </div>
-                    <button onclick="logout()" class="bg-blue-800 hover:bg-blue-900 px-3 py-2 rounded text-sm transition shadow-inner" title="Keluar">
-                        <i class="fa-solid fa-right-from-bracket"></i> Keluar
-                    </button>
-                </div>
-            </div>
-        </nav>
-
-        <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-8">
-            <div class="flex space-x-2 mb-6 border-b border-gray-200">
-                <button onclick="switchTab('listTab')" id="btn-listTab" class="py-2 px-4 text-primary border-b-2 border-primary font-semibold transition-colors">
-                    <i class="fa-solid fa-list mr-2"></i>Dashboard Status
-                </button>
-                <button onclick="switchTab('formTab')" id="btn-formTab" class="py-2 px-4 text-gray-500 hover:text-primary transition-colors font-semibold">
-                    <i class="fa-solid fa-pen-to-square mr-2"></i>Panel Pribadi
-                </button>
-            </div>
-
-            <!-- Header Indikator Kapasitas -->
-            <div id="capacityHeaders" class="grid grid-cols-2 gap-4 mb-6 transition-all duration-300">
-                <div class="bg-white border rounded-xl p-4 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500 font-medium">Slot Istirahat SMT</p>
-                        <p id="headcountSMT" class="text-2xl font-bold text-gray-800">0/4</p>
-                    </div>
-                    <i class="fa-solid fa-users text-blue-100 text-4xl"></i>
-                </div>
-                <div class="bg-white border rounded-xl p-4 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500 font-medium">Slot Istirahat PS</p>
-                        <p id="headcountPS" class="text-2xl font-bold text-gray-800">0/3</p>
-                    </div>
-                    <i class="fa-solid fa-user-tie text-purple-100 text-4xl"></i>
-                </div>
-            </div>
-
-            <div id="notification" class="hidden mb-4 p-4 rounded-md text-white font-medium transition-all duration-300 shadow-md"></div>
-
-            <!-- TAB 1: DASHBOARD (RIWAYAT) -->
-            <section id="listTab" class="tab-content active bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-4 mb-4 gap-4">
-                    <h2 class="text-xl font-bold text-gray-800">Monitoring Istirahat Hari Ini</h2>
-                    <!-- TOMBOL REFRESH UTAMA -->
-                    <button id="btnRefresh" onclick="refreshData()" class="bg-primary hover:bg-secondary text-white py-2 px-4 rounded-lg transition shadow-md font-bold text-sm flex items-center w-full md:w-auto justify-center">
-                        <i class="fa-solid fa-arrows-rotate mr-2"></i> Segarkan Data Cloud
-                    </button>
+    <div id="appContainer-breaktime" class="block w-full">
+        <div id="bt_loginView" class="min-h-[calc(100vh-65px)] flex items-center justify-center bg-slate-900 p-4">
+            <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+                <div class="text-center mb-8">
+                    <i class="fa-solid fa-cloud-arrow-down text-5xl text-primary mb-3"></i>
+                    <h1 class="text-2xl font-bold text-gray-800">BreakTime Pro</h1>
+                    <p class="text-sm text-gray-500 mt-1">Sistem Manajemen Waktu (Cloud Sync)</p>
                 </div>
                 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse min-w-[900px]">
-                        <thead>
-                            <tr class="bg-slate-50 text-slate-600 text-sm uppercase tracking-wider">
-                                <th class="p-4 border-b font-semibold">Karyawan</th>
-                                <th class="p-4 border-b font-semibold">Status & Timer</th>
-                                <th class="p-4 border-b font-semibold">Alasan</th>
-                                <th class="p-4 border-b font-semibold text-center w-48">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody" class="text-gray-700 text-sm"></tbody>
-                    </table>
-                </div>
-                
-                <div id="emptyState" class="hidden text-center py-16">
-                    <div class="text-gray-300 mb-3"><i class="fa-solid fa-mug-hot text-6xl"></i></div>
-                    <p class="text-gray-500 font-medium">Belum ada aktivitas istirahat hari ini.</p>
-                </div>
-            </section>
+                <form id="bt_loginForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Otoritas (Role)</label>
+                        <select id="bt_loginRole" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:bg-gray-100">
+                            <option value="">-- Menghubungkan ke Database... --</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Karyawan</label>
+                        <select id="bt_loginSelect" required disabled class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:bg-gray-100">
+                            <option value="">-- Pilih Otoritas Terlebih Dahulu --</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">PIN Akses</label>
+                        <div class="relative">
+                            <input type="password" id="bt_loginPin" required placeholder="Masukkan PIN" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                            <i class="fa-solid fa-key absolute right-4 top-4 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <button type="submit" id="bt_btnLoginBtn" disabled class="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-secondary transition shadow-md opacity-50 cursor-not-allowed mt-2">
+                        Tunggu Sebentar...
+                    </button>
+                </form>
+            </div>
+        </div>
 
-            <!-- TAB 2: FORM / MONITOR PRIBADI -->
-            <section id="formTab" class="tab-content bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100">
-                <div id="statusQuotaPanel" class="mb-4 hidden transition-all"></div>
+        <div id="bt_appView" class="hidden flex-col min-h-[calc(100vh-65px)]">
+            <nav class="bg-primary text-white shadow-md">
+                <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-stopwatch text-2xl"></i>
+                        <h1 class="text-xl font-bold tracking-wide hidden sm:block">BreakTime Pro</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right">
+                            <div id="bt_navUserName" class="font-bold text-sm">Nama</div>
+                            <div id="bt_navUserRole" class="text-xs text-blue-200">Role</div>
+                        </div>
+                        <button onclick="bt_logout()" class="bg-blue-800 hover:bg-blue-900 px-3 py-2 rounded text-sm transition shadow-inner" title="Keluar">
+                            <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                        </button>
+                    </div>
+                </div>
+            </nav>
 
-                <form id="formIzin" class="space-y-6">
-                    <!-- Judul Form dengan Tombol Refresh Internal -->
-                    <div class="flex justify-between items-center border-b pb-3 mb-6">
-                        <h2 class="text-xl font-bold text-gray-800">Form Pengajuan Istirahat</h2>
-                        <button type="button" onclick="refreshData(false)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 py-1.5 px-3 rounded transition shadow-sm border text-sm flex items-center">
-                            <i class="fa-solid fa-arrows-rotate mr-2"></i> Segarkan Data
+            <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-8">
+                <div class="flex space-x-2 mb-6 border-b border-gray-200">
+                    <button onclick="bt_switchTab('bt_listTab')" id="bt_btn-listTab" class="py-2 px-4 text-primary border-b-2 border-primary font-semibold transition-colors">
+                        <i class="fa-solid fa-list mr-2"></i>Dashboard Status
+                    </button>
+                    <button onclick="bt_switchTab('bt_formTab')" id="bt_btn-formTab" class="py-2 px-4 text-gray-500 hover:text-primary transition-colors font-semibold">
+                        <i class="fa-solid fa-pen-to-square mr-2"></i>Panel Pribadi
+                    </button>
+                </div>
+
+                <div id="bt_capacityHeaders" class="grid grid-cols-2 gap-4 mb-6 transition-all duration-300">
+                    <div class="bg-white border rounded-xl p-4 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">Slot Istirahat SMT</p>
+                            <p id="bt_headcountSMT" class="text-2xl font-bold text-gray-800">0/4</p>
+                        </div>
+                        <i class="fa-solid fa-users text-blue-100 text-4xl"></i>
+                    </div>
+                    <div class="bg-white border rounded-xl p-4 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">Slot Istirahat PS</p>
+                            <p id="bt_headcountPS" class="text-2xl font-bold text-gray-800">0/3</p>
+                        </div>
+                        <i class="fa-solid fa-user-tie text-purple-100 text-4xl"></i>
+                    </div>
+                </div>
+
+                <div id="bt_notification" class="hidden mb-4 p-4 rounded-md text-white font-medium transition-all duration-300 shadow-md"></div>
+
+                <section id="bt_listTab" class="bt-tab-content active bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-4 mb-4 gap-4">
+                        <h2 class="text-xl font-bold text-gray-800">Monitoring Istirahat Hari Ini</h2>
+                        <button id="bt_btnRefresh" onclick="bt_refreshData()" class="bg-primary hover:bg-secondary text-white py-2 px-4 rounded-lg transition shadow-md font-bold text-sm flex items-center w-full md:w-auto justify-center">
+                            <i class="fa-solid fa-arrows-rotate mr-2"></i> Segarkan Data Cloud
                         </button>
                     </div>
                     
-                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
-                        <label class="flex items-start cursor-pointer">
-                            <input type="checkbox" id="isDarurat" class="mt-1 w-5 h-5 text-red-600 border-gray-300 rounded focus:ring-red-500" onchange="toggleDaruratMode()">
-                            <div class="ml-3">
-                                <span class="block text-red-800 font-bold">Ajukan Izin Khusus / Darurat</span>
-                                <span class="block text-xs text-red-600 mt-1">Gunakan jika slot penuh, butuh waktu lebih dari sisa saldo, atau jatah habis. Harus disetujui <b>Manager (MGR)</b>.</span>
-                            </div>
-                        </label>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[900px]">
+                            <thead>
+                                <tr class="bg-slate-50 text-slate-600 text-sm uppercase tracking-wider">
+                                    <th class="p-4 border-b font-semibold">Karyawan</th>
+                                    <th class="p-4 border-b font-semibold">Status & Timer</th>
+                                    <th class="p-4 border-b font-semibold">Alasan</th>
+                                    <th class="p-4 border-b font-semibold text-center w-48">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bt_tableBody" class="text-gray-700 text-sm"></tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="bt_emptyState" class="hidden text-center py-16">
+                        <div class="text-gray-300 mb-3"><i class="fa-solid fa-mug-hot text-6xl"></i></div>
+                        <p class="text-gray-500 font-medium">Belum ada aktivitas istirahat hari ini.</p>
+                    </div>
+                </section>
+
+                <section id="bt_formTab" class="bt-tab-content bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100">
+                    <div id="bt_statusQuotaPanel" class="mb-4 hidden transition-all"></div>
+
+                    <form id="bt_formIzin" class="space-y-6">
+                        <div class="flex justify-between items-center border-b pb-3 mb-6">
+                            <h2 class="text-xl font-bold text-gray-800">Form Pengajuan Istirahat</h2>
+                            <button type="button" onclick="bt_refreshData(false)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 py-1.5 px-3 rounded transition shadow-sm border text-sm flex items-center">
+                                <i class="fa-solid fa-arrows-rotate mr-2"></i> Segarkan Data
+                            </button>
+                        </div>
                         
-                        <div id="daruratInputs" class="hidden mt-4 pt-4 border-t border-red-200">
-                            <label class="block text-sm font-bold text-red-700 mb-1">Durasi Darurat Dibutuhkan (Menit)</label>
-                            <input type="number" id="waktuDarurat" min="1" placeholder="Contoh: 60" class="w-full md:w-1/2 px-4 py-2 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 outline-none bg-white">
+                        <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                            <label class="flex items-start cursor-pointer">
+                                <input type="checkbox" id="bt_isDarurat" class="mt-1 w-5 h-5 text-red-600 border-gray-300 rounded focus:ring-red-500" onchange="bt_toggleDaruratMode()">
+                                <div class="ml-3">
+                                    <span class="block text-red-800 font-bold">Ajukan Izin Khusus / Darurat</span>
+                                    <span class="block text-xs text-red-600 mt-1">Gunakan jika slot penuh, butuh waktu lebih dari sisa saldo, atau jatah habis. Harus disetujui <b>Manager (MGR)</b>.</span>
+                                </div>
+                            </label>
+                            
+                            <div id="bt_daruratInputs" class="hidden mt-4 pt-4 border-t border-red-200">
+                                <label class="block text-sm font-bold text-red-700 mb-1">Durasi Darurat Dibutuhkan (Menit)</label>
+                                <input type="number" id="bt_waktuDarurat" min="1" placeholder="Contoh: 60" class="w-full md:w-1/2 px-4 py-2 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 outline-none bg-white">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
-                            <input type="text" id="formNama" readonly class="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed outline-none font-bold">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
+                                <input type="text" id="bt_formNama" readonly class="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed outline-none font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">NIK & Departemen</label>
+                                <input type="text" id="bt_formNikDept" readonly class="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed outline-none">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Alasan</label>
+                                <select id="bt_alasan" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-white">
+                                    <option value="">-- Pilih Alasan --</option>
+                                    <option value="Makan Siang">Makan Siang</option>
+                                    <option value="Ibadah">Ibadah</option>
+                                    <option value="Makan & Ibadah">Makan & Ibadah</option>
+                                    <option value="Keperluan Medis / Pribadi">Keperluan Medis / Pribadi</option>
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">NIK & Departemen</label>
-                            <input type="text" id="formNikDept" readonly class="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed outline-none">
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Alasan</label>
-                            <select id="alasan" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-white">
-                                <option value="">-- Pilih Alasan --</option>
-                                <option value="Makan Siang">Makan Siang</option>
-                                <option value="Ibadah">Ibadah</option>
-                                <option value="Makan & Ibadah">Makan & Ibadah</option>
-                                <option value="Keperluan Medis / Pribadi">Keperluan Medis / Pribadi</option>
-                            </select>
-                        </div>
-                    </div>
 
-                    <div class="flex justify-end pt-4 border-t mt-6">
-                        <button type="submit" id="btnSubmit" class="px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-secondary transition shadow-md flex items-center">
-                            <i class="fa-solid fa-paper-plane mr-2"></i> Ajukan Istirahat
-                        </button>
-                    </div>
-                </form>
-            </section>
-        </main>
+                        <div class="flex justify-end pt-4 border-t mt-6">
+                            <button type="submit" id="bt_btnSubmit" class="px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-secondary transition shadow-md flex items-center">
+                                <i class="fa-solid fa-paper-plane mr-2"></i> Ajukan Istirahat
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </main>
+        </div>
     </div>
 
-    <script>
-        // =========================================================================
-        // URL GOOGLE SCRIPT
-        // =========================================================================
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz6sxdi0ymYZlTCWs2tP_At2U5E8GWkLm-2fD2BREXOr8xFCmC0S94Z4QkxTrvrcGF0Pw/exec'; 
-        
-        const STORAGE_KEY = 'DATA_IZIN_KARYAWAN';
-        const MAX_SMT = 4;
-        const MAX_PS = 3;
-        const DAILY_TIME_POOL = 100; 
-        const MAX_SESSION_TIME = 50; 
-        
-        let databaseKaryawan = []; 
-        let currentUser = null;
-        let userQuotaStatus = null; 
-        let activeHeadcounts = { smt: 0, ps: 0 };
-        let pollingInterval = null; // Variabel Auto-Refresh
 
-        // ==========================================
-        // SISTEM FORMAT TANGGAL YANG KONSISTEN
-        // ==========================================
-        function getTodayString() {
+    <!-- ========================================== -->
+    <!-- APP 2: TABVAULT (LEDGER PEMINJAMAN)        -->
+    <!-- ========================================== -->
+    <div id="appContainer-tabvault" class="hidden w-full tabvault-container">
+        <div class="wrap">
+            <header>
+                <div class="brand-mark">
+                <div class="seal"><img src="img/logo.jpeg" alt="Logo" onerror="this.style.display='none'"></div>
+                <div>
+                    <p class="eyebrow">Ledger Aset Digital</p>
+                    <h1>PEMINJAMAN TAB</h1>
+                </div>
+                </div>
+                <p class="tagline">"Setiap tablet yang keluar, tercatat. Setiap yang kembali, terstempel."</p>
+            </header>
+
+            <div class="config-banner" id="tv_configBanner">
+                ⚠️ API_URL belum diatur.
+            </div>
+
+            <section class="stats">
+                <div class="stat-card">
+                <p class="stat-label">Total Tercatat</p>
+                <p class="stat-value gold" id="tv_statTotal">–</p>
+                <p class="stat-foot">Seluruh entri peminjaman</p>
+                </div>
+                <div class="stat-card">
+                <p class="stat-label">Sedang Dipinjam</p>
+                <p class="stat-value copper" id="tv_statOut">–</p>
+                <p class="stat-foot">Belum ditandai kembali</p>
+                </div>
+                <div class="stat-card">
+                <p class="stat-label">Sudah Kembali</p>
+                <p class="stat-value sage" id="tv_statIn">–</p>
+                <p class="stat-foot">Selesai siklus peminjaman</p>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h2>Catat Peminjaman Baru</h2>
+                <p class="sub">Pilih nama peminjam dan nomor tab untuk membuka entri baru di ledger. Nomor tab yang sedang dipinjam tidak akan muncul di daftar.</p>
+                <form id="tv_borrowForm">
+                <div>
+                    <label for="tv_nama">Nama Peminjam</label>
+                    <select id="tv_nama" required>
+                    <option value="" disabled selected>Pilih nama…</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="tv_nomorTab">Nomor Tab</label>
+                    <select id="tv_nomorTab" required>
+                    <option value="" disabled selected>Pilih nomor tab…</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary" id="tv_submitBtn">Pinjamkan →</button>
+                </form>
+            </section>
+
+            <section>
+                <div class="ledger-head">
+                <h2>Buku Ledger</h2>
+                <div class="search-box" style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <input type="text" id="tv_searchInput" placeholder="Cari nama atau nomor tab…" />
+                    <input type="date" id="tv_dateFilter" title="Filter riwayat berdasarkan tanggal peminjaman" />
+                    <button type="button" class="btn-secondary" id="tv_clearDateFilter" style="display:none;">✕ Tanggal</button>
+                </div>
+                </div>
+                <table>
+                <thead>
+                    <tr>
+                    <th>Nama</th>
+                    <th>Nomor Tab</th>
+                    <th>Peminjaman</th>
+                    <th>Kembali</th>
+                    <th>SPV Penerima</th>
+                    <th>Status</th>
+                    <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tv_tableBody">
+                    <tr><td colspan="7"><div class="empty-state"><div class="glyph">⟳</div>Memuat data…</div></td></tr>
+                </tbody>
+                </table>
+            </section>
+            <footer>TABVAULT — Dibangun dengan Google Apps Script · Google Sheets</footer>
+        </div>
+
+        <div class="toast" id="tv_toast"></div>
+
+        <div class="modal-overlay" id="tv_returnModal">
+        <div class="modal-box">
+            <h3>Tandai Kembali</h3>
+            <p class="sub">Pilih SPV yang menerima tablet ini.</p>
+            <label for="tv_spvSelect">Nama SPV</label>
+            <select id="tv_spvSelect">
+            <option value="" disabled selected>Pilih SPV…</option>
+            </select>
+            <div class="modal-actions">
+            <button class="btn-secondary" onclick="tv_closeReturnModal()">Batal</button>
+            <button class="btn-primary" onclick="tv_confirmReturn()">Konfirmasi</button>
+            </div>
+        </div>
+        </div>
+
+        <div class="modal-overlay" id="tv_deleteModal">
+        <div class="modal-box">
+            <h3>Hapus Entri</h3>
+            <p class="sub">Masukkan kata sandi untuk menghapus entri ini dari ledger. Tindakan ini tidak bisa dibatalkan.</p>
+            <label for="tv_deletePassword">Kata Sandi</label>
+            <input type="password" id="tv_deletePassword" placeholder="••••••••" autocomplete="off" />
+            <p class="modal-error" id="tv_deleteError"></p>
+            <div class="modal-actions">
+            <button class="btn-secondary" onclick="tv_closeDeleteModal()">Batal</button>
+            <button class="btn-danger" onclick="tv_confirmDelete()">Hapus</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================================= -->
+    <!-- LOGIKA JAVASCRIPT GLOBAL & MASTER TAB                                                     -->
+    <!-- ========================================================================================= -->
+    <script>
+        function switchMasterApp(appName) {
+            document.getElementById('appContainer-breaktime').style.display = 'none';
+            document.getElementById('appContainer-tabvault').style.display = 'none';
+            
+            const btnBT = document.getElementById('mbtn-breaktime');
+            const btnTV = document.getElementById('mbtn-tabvault');
+            
+            btnBT.className = "px-5 py-2.5 rounded-full font-bold text-sm md:text-base bg-transparent text-gray-300 hover:bg-slate-800 transition-all";
+            btnTV.className = "px-5 py-2.5 rounded-full font-bold text-sm md:text-base bg-transparent text-gray-300 hover:bg-slate-800 transition-all";
+
+            if(appName === 'breaktime') {
+                document.getElementById('appContainer-breaktime').style.display = 'block';
+                btnBT.className = "px-5 py-2.5 rounded-full font-bold text-sm md:text-base bg-primary text-white shadow-md transition-all";
+            } else {
+                document.getElementById('appContainer-tabvault').style.display = 'block';
+                btnTV.className = "px-5 py-2.5 rounded-full font-bold text-sm md:text-base bg-gold text-white shadow-md transition-all";
+                if(typeof tv_loadData === 'function') tv_loadData();
+            }
+        }
+    </script>
+
+
+    <!-- ========================================================================================= -->
+    <!-- LOGIKA JAVASCRIPT: BREAKTIME PRO (SISTEM ISTIRAHAT)                                       -->
+    <!-- ========================================================================================= -->
+    <script>
+        const BT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz6sxdi0ymYZlTCWs2tP_At2U5E8GWkLm-2fD2BREXOr8xFCmC0S94Z4QkxTrvrcGF0Pw/exec'; 
+        const BT_STORAGE_KEY = 'DATA_IZIN_KARYAWAN';
+        const BT_MAX_SMT = 4;
+        const BT_MAX_PS = 3;
+        const BT_DAILY_TIME_POOL = 100; 
+        const BT_MAX_SESSION_TIME = 50; 
+        
+        let bt_databaseKaryawan = []; 
+        let bt_currentUser = null;
+        let bt_userQuotaStatus = null; 
+        let bt_activeHeadcounts = { smt: 0, ps: 0 };
+        let bt_pollingInterval = null; 
+
+        function bt_getTodayString() {
             const d = new Date();
             const year = d.getFullYear();
             const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -229,9 +487,9 @@
             return `${year}-${month}-${day}`;
         }
 
-        function isToday(dateStr) {
+        function bt_isToday(dateStr) {
             if (!dateStr) return false;
-            if (dateStr === getTodayString()) return true;
+            if (dateStr === bt_getTodayString()) return true;
             const today = new Date();
             if (dateStr === today.toLocaleDateString('id-ID')) return true;
             const itemDate = new Date(dateStr);
@@ -243,94 +501,87 @@
             return false;
         }
 
-        function formatTimeDisplay(timeStr) {
+        function bt_formatTimeDisplay(timeStr) {
             if (!timeStr || timeStr === '-') return '-';
             const match = String(timeStr).match(/\b\d{2}:\d{2}\b/);
             return match ? match[0] : timeStr;
         }
 
-        // ==========================================
-        // SISTEM INIT & FETCH CLOUD
-        // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
-            fetchDatabase();
+            bt_fetchDatabase();
         });
 
-        async function fetchDatabase() {
-            const select = document.getElementById('loginSelect');
-            const btn = document.getElementById('btnLoginBtn');
-            
+        async function bt_fetchDatabase() {
+            const select = document.getElementById('bt_loginSelect');
+            const btn = document.getElementById('bt_btnLoginBtn');
             try {
-                if (!SCRIPT_URL || SCRIPT_URL === 'MASUKKAN_URL_GOOGLE_SCRIPT_ANDA_DISINI') {
+                if (!BT_SCRIPT_URL || BT_SCRIPT_URL === 'MASUKKAN_URL_GOOGLE_SCRIPT_ANDA_DISINI') {
                     throw new Error("URL Script belum dikonfigurasi.");
                 }
-
-                const response = await fetch(SCRIPT_URL);
+                const response = await fetch(BT_SCRIPT_URL);
                 const data = await response.json();
-                
                 if (data.error) throw new Error(data.error);
-                if (data.karyawan && data.karyawan.length > 0) databaseKaryawan = data.karyawan; 
-                
+                if (data.karyawan && data.karyawan.length > 0) bt_databaseKaryawan = data.karyawan; 
                 if (data.riwayat) {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data.riwayat.reverse()));
+                    localStorage.setItem(BT_STORAGE_KEY, JSON.stringify(data.riwayat.reverse()));
                 }
-                setupLoginDropdowns(false);
-
+                bt_setupLoginDropdowns(false);
             } catch (error) {
-                console.warn("Mode Lokal Aktif:", error.message);
-                setupLoginDropdowns(true);
+                console.warn("BreakTime - Mode Lokal Aktif:", error.message);
+                bt_setupLoginDropdowns(true);
             }
         }
 
-        async function refreshData(isSilent = false) {
-            const btn = document.getElementById('btnRefresh');
+        async function bt_refreshData(isSilent = false) {
+            const btn = document.getElementById('bt_btnRefresh');
             let originalHTML = "";
             if (!isSilent && btn) {
                 originalHTML = btn.innerHTML;
                 btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyinkronkan...';
                 btn.disabled = true;
             }
-
             try {
-                const response = await fetch(SCRIPT_URL);
+                const response = await fetch(BT_SCRIPT_URL);
                 const data = await response.json();
                 if (data.riwayat) {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data.riwayat.reverse()));
+                    localStorage.setItem(BT_STORAGE_KEY, JSON.stringify(data.riwayat.reverse()));
+                    const oldStatus = bt_userQuotaStatus;
+                    bt_updateHeadcounts();
                     
-                    // Deteksi perubahan status untuk Auto-Transition
-                    const oldStatus = userQuotaStatus;
-                    updateHeadcounts();
-                    
-                    if(currentUser) {
-                        userQuotaStatus = getEmployeeStatus(currentUser.nik);
+                    if(bt_currentUser) {
+                        bt_userQuotaStatus = bt_getEmployeeStatus(bt_currentUser.nik);
                         
-                        const wasPending = oldStatus && oldStatus.isPendingOrActive && !oldStatus.activeItemData;
-                        const wasActive = oldStatus && !!oldStatus.activeItemData;
-                        const isNowActive = !!userQuotaStatus.activeItemData;
-                        const isNowPending = userQuotaStatus.isPendingOrActive && !userQuotaStatus.activeItemData;
-                        const isNowNormal = !userQuotaStatus.isPendingOrActive && !userQuotaStatus.activeItemData;
+                        const wasPendingReturn = oldStatus && oldStatus.isPendingReturn;
+                        const wasPendingApprove = oldStatus && oldStatus.isPendingOrActive && !oldStatus.activeItemData && !oldStatus.isPendingReturn;
+                        
+                        const isNowActive = !!bt_userQuotaStatus.activeItemData && !bt_userQuotaStatus.isPendingReturn;
+                        const isNowPendingReturn = bt_userQuotaStatus.isPendingReturn;
+                        const isNowNormal = !bt_userQuotaStatus.isPendingOrActive && !bt_userQuotaStatus.activeItemData && !bt_userQuotaStatus.isPendingReturn;
 
-                        // TRANSISI CERDAS (Auto Pindah Layar)
-                        if (wasPending && isNowActive) {
-                            showNotification("Hore! Izin Anda disetujui PS/MGR.", "success");
-                            checkQuotaAndUpdateUI(); 
+                        if (wasPendingApprove && isNowActive) {
+                            bt_showNotification("Hore! Izin Anda disetujui PS/MGR.", "success");
+                            bt_checkQuotaAndUpdateUI(); 
                         } 
-                        else if (wasPending && isNowNormal) {
-                            showNotification("Pengajuan izin Anda ditolak/dibatalkan.", "error");
-                            checkQuotaAndUpdateUI(); 
+                        else if (wasPendingApprove && isNowNormal) {
+                            bt_showNotification("Pengajuan izin Anda ditolak/dibatalkan.", "error");
+                            bt_checkQuotaAndUpdateUI(); 
                         }
-                        else if (wasActive && isNowNormal) {
-                            showNotification("Masa istirahat selesai! Status Anda telah ditutup.", "success");
-                            checkQuotaAndUpdateUI();
+                        else if (wasPendingReturn && isNowNormal) {
+                            bt_showNotification("Kepulangan Anda telah diverifikasi! Status Selesai.", "success");
+                            bt_checkQuotaAndUpdateUI();
+                        }
+                        else if (wasPendingReturn && isNowActive) {
+                            bt_showNotification("Verifikasi ditolak. Anda masih tercatat Aktif Istirahat.", "error");
+                            bt_checkQuotaAndUpdateUI();
                         }
                         else {
-                            if(!isSilent) checkQuotaAndUpdateUI(); 
+                            if(!isSilent) bt_checkQuotaAndUpdateUI(); 
                         }
                     }
-                    renderTable();
+                    bt_renderTable();
                 }
             } catch(e) {
-                if(!isSilent) showNotification('Gagal menyinkronkan data dari cloud.', 'error');
+                if(!isSilent) bt_showNotification('Gagal menyinkronkan data dari cloud.', 'error');
             } finally {
                 if (!isSilent && btn) {
                     btn.innerHTML = originalHTML;
@@ -339,27 +590,23 @@
             }
         }
 
-        // --- SISTEM AUTO POLLING SAAT AKTIF/PENDING ---
-        function startStatusPolling() {
-            if (!pollingInterval) {
-                pollingInterval = setInterval(() => refreshData(true), 7000); 
+        function bt_startStatusPolling() {
+            if (!bt_pollingInterval) {
+                bt_pollingInterval = setInterval(() => bt_refreshData(true), 7000); 
             }
         }
 
-        function stopStatusPolling() {
-            if (pollingInterval) {
-                clearInterval(pollingInterval);
-                pollingInterval = null;
+        function bt_stopStatusPolling() {
+            if (bt_pollingInterval) {
+                clearInterval(bt_pollingInterval);
+                bt_pollingInterval = null;
             }
         }
 
-        // ==========================================
-        // SISTEM LOGIN
-        // ==========================================
-        function setupLoginDropdowns(isLocalMode) {
-            const roleSelect = document.getElementById('loginRole');
-            const nameSelect = document.getElementById('loginSelect');
-            const btn = document.getElementById('btnLoginBtn');
+        function bt_setupLoginDropdowns(isLocalMode) {
+            const roleSelect = document.getElementById('bt_loginRole');
+            const nameSelect = document.getElementById('bt_loginSelect');
+            const btn = document.getElementById('bt_btnLoginBtn');
 
             roleSelect.innerHTML = `
                 <option value="">-- Pilih Otoritas ${isLocalMode ? '(Local)' : ''} --</option>
@@ -377,7 +624,7 @@
                 nameSelect.innerHTML = '<option value="">-- Pilih Nama Karyawan --</option>';
 
                 if (selectedRole) {
-                    const filteredUsers = databaseKaryawan
+                    const filteredUsers = bt_databaseKaryawan
                         .filter(k => k.role === selectedRole)
                         .sort((a, b) => a.nama.localeCompare(b.nama)); 
 
@@ -400,131 +647,132 @@
                 }
             });
 
-            checkSession();
+            bt_checkSession();
         }
 
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
+        document.getElementById('bt_loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            const nik = document.getElementById('loginSelect').value;
-            const pin = document.getElementById('loginPin').value;
+            const nik = document.getElementById('bt_loginSelect').value;
+            const pin = document.getElementById('bt_loginPin').value;
             if(!nik) return alert('Pilih nama karyawan!');
 
-            const user = databaseKaryawan.find(k => k.nik === nik);
+            const user = bt_databaseKaryawan.find(k => k.nik === nik);
             if (user && user.pin === String(pin)) {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                document.getElementById('loginForm').reset();
-                document.getElementById('loginSelect').innerHTML = '<option value="">-- Pilih Otoritas Terlebih Dahulu --</option>';
-                document.getElementById('loginSelect').disabled = true;
-                checkSession();
+                localStorage.setItem('bt_currentUser', JSON.stringify(user));
+                document.getElementById('bt_loginForm').reset();
+                document.getElementById('bt_loginSelect').innerHTML = '<option value="">-- Pilih Otoritas Terlebih Dahulu --</option>';
+                document.getElementById('bt_loginSelect').disabled = true;
+                bt_checkSession();
             } else {
                 alert('PIN Salah!');
             }
         });
 
-        function checkSession() {
-            const session = localStorage.getItem('currentUser');
+        function bt_checkSession() {
+            const session = localStorage.getItem('bt_currentUser');
             if (session) {
-                currentUser = JSON.parse(session);
-                
-                const stillExists = databaseKaryawan.find(k => k.nik === currentUser.nik);
-                if(databaseKaryawan.length > 0 && !stillExists) {
-                    logout(); return;
+                bt_currentUser = JSON.parse(session);
+                const stillExists = bt_databaseKaryawan.find(k => k.nik === bt_currentUser.nik);
+                if(bt_databaseKaryawan.length > 0 && !stillExists) {
+                    bt_logout(); return;
                 }
-
-                document.getElementById('loginView').classList.add('hidden');
-                document.getElementById('appView').classList.remove('hidden');
-                document.getElementById('appView').classList.add('flex');
+                document.getElementById('bt_loginView').classList.add('hidden');
+                document.getElementById('bt_appView').classList.remove('hidden');
+                document.getElementById('bt_appView').classList.add('flex');
                 
-                document.getElementById('navUserName').textContent = currentUser.nama;
+                document.getElementById('bt_navUserName').textContent = bt_currentUser.nama;
                 
                 let roleText = 'Sales (SMT)';
-                if(currentUser.role === 'PS') roleText = 'Supervisor (PS)';
-                if(currentUser.role === 'MGR') roleText = 'Manager (MGR)';
-                document.getElementById('navUserRole').textContent = `Otoritas: ${roleText}`;
+                if(bt_currentUser.role === 'PS') roleText = 'Supervisor (PS)';
+                if(bt_currentUser.role === 'MGR') roleText = 'Manager (MGR)';
+                document.getElementById('bt_navUserRole').textContent = `Otoritas: ${roleText}`;
                 
-                document.getElementById('formNama').value = currentUser.nama;
-                document.getElementById('formNikDept').value = `${currentUser.nik} | ${currentUser.departemen}`;
+                document.getElementById('bt_formNama').value = bt_currentUser.nama;
+                document.getElementById('bt_formNikDept').value = `${bt_currentUser.nik} | ${bt_currentUser.departemen}`;
                 
-                updateHeadcounts();
-                checkQuotaAndUpdateUI();
-                renderTable();
+                bt_updateHeadcounts();
+                bt_checkQuotaAndUpdateUI();
+                bt_renderTable();
             } else {
-                document.getElementById('loginView').classList.remove('hidden');
-                document.getElementById('appView').classList.add('hidden');
-                document.getElementById('appView').classList.remove('flex');
+                document.getElementById('bt_loginView').classList.remove('hidden');
+                document.getElementById('bt_appView').classList.add('hidden');
+                document.getElementById('bt_appView').classList.remove('flex');
             }
         }
 
-        function logout() {
-            stopStatusPolling(); 
-            localStorage.removeItem('currentUser');
-            currentUser = null;
-            checkSession();
+        function bt_logout() {
+            bt_stopStatusPolling(); 
+            localStorage.removeItem('bt_currentUser');
+            bt_currentUser = null;
+            bt_checkSession();
         }
 
-        // ==========================================
-        // LOGIKA KAPASITAS & STATUS
-        // ==========================================
-        function updateHeadcounts() {
-            const dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            
+        function bt_updateHeadcounts() {
+            const dataIzin = JSON.parse(localStorage.getItem(BT_STORAGE_KEY)) || [];
             let smt = 0; let ps = 0;
             
             dataIzin.forEach(item => {
-                if(isToday(item.tanggal) && item.status === 'Aktif (Sedang Istirahat)') {
+                // KAPASITAS DITAHAN JIKA AKTIF ATAU MENUNGGU VERIFIKASI (Mencegah over-capacity)
+                if(bt_isToday(item.tanggal) && (item.status === 'Aktif (Sedang Istirahat)' || item.status === 'Menunggu Verifikasi Kembali')) {
                     if(item.role === 'SMT') smt++;
                     if(item.role === 'PS') ps++;
                 }
             });
 
-            activeHeadcounts = { smt, ps };
+            bt_activeHeadcounts = { smt, ps };
             
-            document.getElementById('headcountSMT').textContent = `${smt}/${MAX_SMT}`;
-            document.getElementById('headcountPS').textContent = `${ps}/${MAX_PS}`;
+            document.getElementById('bt_headcountSMT').textContent = `${smt}/${BT_MAX_SMT}`;
+            document.getElementById('bt_headcountPS').textContent = `${ps}/${BT_MAX_PS}`;
             
-            document.getElementById('headcountSMT').parentElement.parentElement.className = 
-                `bg-white border rounded-xl p-4 shadow-sm flex items-center justify-between transition-all duration-300 ${smt >= MAX_SMT ? 'border-red-300 bg-red-50' : ''}`;
+            document.getElementById('bt_headcountSMT').parentElement.parentElement.className = 
+                `bg-white border rounded-xl p-4 shadow-sm flex items-center justify-between transition-all duration-300 ${smt >= BT_MAX_SMT ? 'border-red-300 bg-red-50' : ''}`;
+            document.getElementById('bt_headcountPS').parentElement.parentElement.className = 
+                `bg-white border rounded-xl p-4 shadow-sm flex items-center justify-between transition-all duration-300 ${ps >= BT_MAX_PS ? 'border-red-300 bg-red-50' : ''}`;
             
-            document.getElementById('headcountPS').parentElement.parentElement.className = 
-                `bg-white border rounded-xl p-4 shadow-sm flex items-center justify-between transition-all duration-300 ${ps >= MAX_PS ? 'border-red-300 bg-red-50' : ''}`;
+            if(smt >= BT_MAX_SMT) document.getElementById('bt_headcountSMT').classList.add('text-red-600');
+            else document.getElementById('bt_headcountSMT').classList.remove('text-red-600');
             
-            if(smt >= MAX_SMT) document.getElementById('headcountSMT').classList.add('text-red-600');
-            else document.getElementById('headcountSMT').classList.remove('text-red-600');
-            
-            if(ps >= MAX_PS) document.getElementById('headcountPS').classList.add('text-red-600');
-            else document.getElementById('headcountPS').classList.remove('text-red-600');
+            if(ps >= BT_MAX_PS) document.getElementById('bt_headcountPS').classList.add('text-red-600');
+            else document.getElementById('bt_headcountPS').classList.remove('text-red-600');
         }
 
-        function getEmployeeStatus(nik) {
-            const dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            const historyToday = dataIzin.filter(item => item.nik === nik && isToday(item.tanggal) && item.status !== 'Dibatalkan');
+        function bt_getEmployeeStatus(nik) {
+            const dataIzin = JSON.parse(localStorage.getItem(BT_STORAGE_KEY)) || [];
+            const historyToday = dataIzin.filter(item => item.nik === nik && bt_isToday(item.tanggal) && item.status !== 'Dibatalkan');
             
             let isPendingOrActive = false;
+            let isPendingReturn = false;
             let totalUsedTime = 0;
             let breakCount = 0;
             let activeItemData = null;
 
             historyToday.forEach(item => {
-                if(['Aktif (Sedang Istirahat)', 'Menunggu Persetujuan PS', 'Menunggu Persetujuan MGR'].includes(item.status)) {
+                if(['Aktif (Sedang Istirahat)'].includes(item.status)) {
                     isPendingOrActive = true;
-                    if(item.status === 'Aktif (Sedang Istirahat)') activeItemData = item;
+                    activeItemData = item;
+                } else if (['Menunggu Persetujuan PS', 'Menunggu Persetujuan MGR'].includes(item.status)) {
+                    isPendingOrActive = true;
+                } else if (item.status === 'Menunggu Verifikasi Kembali') {
+                    isPendingOrActive = true;
+                    isPendingReturn = true;
+                    activeItemData = item; // CRITICAL: Treat as active so timer renders in UI
                 } else if (item.status.includes('Selesai')) {
                     totalUsedTime += (item.durasiAktual || 0);
                     breakCount++;
                 }
             });
 
-            let sisaWaktuTotal = DAILY_TIME_POOL - totalUsedTime;
+            let sisaWaktuTotal = BT_DAILY_TIME_POOL - totalUsedTime;
             if(sisaWaktuTotal < 0) sisaWaktuTotal = 0; 
-            let jatahSesiIni = Math.min(MAX_SESSION_TIME, sisaWaktuTotal);
+            let jatahSesiIni = Math.min(BT_MAX_SESSION_TIME, sisaWaktuTotal);
 
-            return { sisaWaktuTotal, jatahSesiIni, isPendingOrActive, activeItemData, totalUsedTime, breakCount };
+            return { sisaWaktuTotal, jatahSesiIni, isPendingOrActive, activeItemData, totalUsedTime, breakCount, isPendingReturn };
         }
 
-        function toggleDaruratMode() {
-            const isDarurat = document.getElementById('isDarurat').checked;
-            const inputs = document.getElementById('daruratInputs');
-            const inputWaktu = document.getElementById('waktuDarurat');
+        function bt_toggleDaruratMode() {
+            const isDarurat = document.getElementById('bt_isDarurat').checked;
+            const inputs = document.getElementById('bt_daruratInputs');
+            const inputWaktu = document.getElementById('bt_waktuDarurat');
             
             if(isDarurat) {
                 inputs.classList.remove('hidden');
@@ -534,72 +782,75 @@
                 inputWaktu.removeAttribute('required');
                 inputWaktu.value = '';
             }
-            checkQuotaAndUpdateUI();
+            bt_checkQuotaAndUpdateUI();
         }
 
-        // ==========================================
-        // UI PANEL PRIBADI
-        // ==========================================
-        function checkQuotaAndUpdateUI() {
-            if(!currentUser) return;
-            const panel = document.getElementById('statusQuotaPanel');
-            const formIzin = document.getElementById('formIzin');
-            const btnSubmit = document.getElementById('btnSubmit');
-            const headerCaps = document.getElementById('capacityHeaders');
-            const isDarurat = document.getElementById('isDarurat').checked;
+        function bt_checkQuotaAndUpdateUI() {
+            if(!bt_currentUser) return;
+            const panel = document.getElementById('bt_statusQuotaPanel');
+            const formIzin = document.getElementById('bt_formIzin');
+            const btnSubmit = document.getElementById('bt_btnSubmit');
+            const headerCaps = document.getElementById('bt_capacityHeaders');
+            const isDarurat = document.getElementById('bt_isDarurat').checked;
             
-            userQuotaStatus = getEmployeeStatus(currentUser.nik); 
+            bt_userQuotaStatus = bt_getEmployeeStatus(bt_currentUser.nik); 
             panel.classList.remove('hidden');
             formIzin.classList.remove('hidden'); 
             headerCaps.classList.remove('hidden');
             btnSubmit.disabled = true; btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
 
-            // --- TAMPILAN 1: SEDANG ISTIRAHAT ---
-            if(userQuotaStatus.activeItemData) {
-                startStatusPolling(); // AKTIFKAN POLLING SAAT ISTIRAHAT
+            // --- TAMPILAN 1: SEDANG ISTIRAHAT ATAU PENDING RETURN (TIMER TETAP BERJALAN) ---
+            if(bt_userQuotaStatus.activeItemData) {
+                bt_startStatusPolling(); 
                 formIzin.classList.add('hidden'); 
                 headerCaps.classList.add('hidden'); 
                 
                 let actionBtnHTML = '';
-                if(currentUser.role === 'SMT') {
-                    actionBtnHTML = `<div class="mt-8 bg-black/20 p-4 rounded-xl inline-block text-yellow-300 font-medium">
-                        <i class="fa-solid fa-triangle-exclamation mr-2"></i> Lapor ke Supervisor (PS) Anda jika sudah kembali bekerja.
-                    </div>`;
+                let titleText = "Masa Istirahat Berjalan";
+                let bgClass = "from-blue-900 via-slate-800 to-black border-blue-700";
+
+                if (bt_userQuotaStatus.isPendingReturn) {
+                    titleText = "Menunggu Verifikasi Kepulangan";
+                    bgClass = "from-purple-900 via-slate-800 to-black border-purple-700";
+                    actionBtnHTML = `
+                        <div class="mt-8 bg-black/40 p-4 rounded-xl inline-block text-purple-300 font-medium border border-purple-500/50">
+                            <i class="fa-solid fa-spinner fa-spin mr-2"></i> Menunggu Verifikasi PS... <br/>
+                            <span class="text-xs text-red-400 mt-1 block font-bold">*WAKTU TERUS BERJALAN HINGGA DISAHKAN.</span>
+                        </div>`;
                 } else {
                     actionBtnHTML = `<div class="mt-8">
-                        <button onclick="aksiReturn('${userQuotaStatus.activeItemData.id}')" class="px-8 py-4 bg-red-500 hover:bg-red-600 text-white text-lg font-bold rounded-full shadow-lg transition-transform transform hover:scale-105">
-                            <i class="fa-solid fa-stopwatch mr-2"></i> Akhiri Istirahat Sekarang
+                        <button onclick="bt_aksiReturn('${bt_userQuotaStatus.activeItemData.id}')" class="px-8 py-4 bg-red-500 hover:bg-red-600 text-white text-lg font-bold rounded-full shadow-lg transition-transform transform hover:scale-105">
+                            <i class="fa-solid fa-bell mr-2"></i> Lapor Selesai Istirahat
                         </button>
                     </div>`;
                 }
 
-                panel.className = "mb-4 p-6 md:p-12 rounded-3xl bg-gradient-to-br from-blue-900 via-slate-800 to-black border border-blue-700 shadow-2xl transition-all text-center relative";
+                panel.className = `mb-4 p-6 md:p-12 rounded-3xl bg-gradient-to-br ${bgClass} shadow-2xl transition-all text-center relative`;
                 panel.innerHTML = `
-                    <!-- TOMBOL REFRESH PRIBADI DI SUDUT -->
                     <div class="flex justify-between items-center w-full mb-6">
                         <div class="text-blue-300 font-bold uppercase tracking-widest text-sm flex items-center">
                             <i class="fa-solid fa-person-walking-luggage mr-2"></i>Status Anda
                         </div>
-                        <button onclick="refreshData(false)" class="text-xs bg-blue-800 hover:bg-blue-700 text-blue-100 px-4 py-2 rounded-full transition shadow border border-blue-600 cursor-pointer flex items-center z-10 hover:scale-105">
+                        <button onclick="bt_refreshData(false)" class="text-xs bg-blue-800 hover:bg-blue-700 text-blue-100 px-4 py-2 rounded-full transition shadow border border-blue-600 cursor-pointer flex items-center z-10 hover:scale-105">
                             <i class="fa-solid fa-arrows-rotate mr-1"></i> Segarkan Layar
                         </button>
                     </div>
 
-                    <h2 class="text-2xl md:text-4xl text-white font-bold mb-6">Masa Istirahat Berjalan</h2>
+                    <h2 class="text-2xl md:text-4xl text-white font-bold mb-6">${titleText}</h2>
                     
                     <div class="bg-black/40 border border-blue-900/50 rounded-2xl p-6 md:p-10 inline-block w-full max-w-lg shadow-inner">
-                        <div class="text-blue-200 text-sm mb-2 uppercase tracking-wider font-semibold">Durasi Istirahat:</div>
-                        <div class="live-timer text-7xl md:text-8xl font-mono text-white font-black tracking-tighter my-2 glow-text" data-timestamp="${userQuotaStatus.activeItemData.timestampMulai}">
+                        <div class="text-blue-200 text-sm mb-2 uppercase tracking-wider font-semibold">Durasi Aktual (Berjalan):</div>
+                        <div class="live-timer text-7xl md:text-8xl font-mono text-white font-black tracking-tighter my-2 glow-text" data-timestamp="${bt_userQuotaStatus.activeItemData.timestampMulai}">
                             00<span class="blink">:</span>00
                         </div>
                     </div>
                     
                     <div class="mt-8 flex flex-col md:flex-row justify-center gap-4 text-sm">
                         <div class="bg-blue-950/60 border border-blue-800/50 px-6 py-3 rounded-full text-blue-200">
-                            <i class="fa-regular fa-clock mr-2"></i> Jam Mulai: <span class="text-white font-bold ml-1">${formatTimeDisplay(userQuotaStatus.activeItemData.jamMulai)}</span>
+                            <i class="fa-regular fa-clock mr-2"></i> Jam Mulai: <span class="text-white font-bold ml-1">${bt_formatTimeDisplay(bt_userQuotaStatus.activeItemData.jamMulai)}</span>
                         </div>
                         <div class="bg-red-950/40 border border-red-900/50 px-6 py-3 rounded-full text-red-200">
-                            <i class="fa-solid fa-hourglass-end mr-2"></i> Batas Waktu: <span class="text-red-400 font-bold ml-1">${formatTimeDisplay(userQuotaStatus.activeItemData.batasKembali)}</span>
+                            <i class="fa-solid fa-hourglass-end mr-2"></i> Batas Waktu: <span class="text-red-400 font-bold ml-1">${bt_formatTimeDisplay(bt_userQuotaStatus.activeItemData.batasKembali)}</span>
                         </div>
                     </div>
                     ${actionBtnHTML}
@@ -607,15 +858,15 @@
                 return;
             }
 
-            // --- TAMPILAN 2: PENDING APPROVAL ---
-            if(userQuotaStatus.isPendingOrActive) {
-                startStatusPolling(); // AKTIFKAN POLLING SAAT PENDING
+            // --- TAMPILAN 2: PENDING APPROVAL (IZIN KELUAR) ---
+            if(bt_userQuotaStatus.isPendingOrActive) {
+                bt_startStatusPolling(); 
                 panel.className = "mb-4 p-8 rounded-2xl bg-yellow-50 border border-yellow-300 shadow-lg transition-all text-center";
                 panel.innerHTML = `
                     <i class="fa-solid fa-hourglass-half text-5xl text-yellow-500 mb-4 block spin-slow"></i>
                     <span class="text-yellow-800 text-2xl font-bold block mb-2">Pengajuan Sedang Diproses</span>
                     <p class="text-base text-yellow-700 mb-6">Menunggu Supervisor (PS) menyetujui pengajuan Anda. <br>Halaman ini akan otomatis beralih jika sudah disetujui.</p>
-                    <button type="button" onclick="refreshData(false)" class="bg-yellow-200 hover:bg-yellow-300 text-yellow-800 font-bold py-2 px-6 rounded-lg transition shadow-sm">
+                    <button type="button" onclick="bt_refreshData(false)" class="bg-yellow-200 hover:bg-yellow-300 text-yellow-800 font-bold py-2 px-6 rounded-lg transition shadow-sm">
                         <i class="fa-solid fa-arrows-rotate mr-2"></i> Cek Manual
                     </button>
                 `;
@@ -624,10 +875,10 @@
             }
 
             // --- TAMPILAN 3: NORMAL (SIAP MENGAJUKAN) ---
-            stopStatusPolling(); // MATIKAN POLLING JIKA NORMAL (Hemat Baterai/Koneksi)
+            bt_stopStatusPolling(); 
             panel.className = "mb-4 p-4 rounded-lg bg-blue-50 border border-blue-100 shadow-sm transition-all";
 
-            if(currentUser.role === 'MGR') {
+            if(bt_currentUser.role === 'MGR') {
                 panel.innerHTML = `<span class="text-blue-700 font-bold">Mode Manager: Bebas batasan pengajuan & kapasitas.</span>`;
                 btnSubmit.disabled = false; btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
                 return;
@@ -642,8 +893,8 @@
             }
 
             let isKapasitasPenuh = false;
-            if(currentUser.role === 'SMT' && activeHeadcounts.smt >= MAX_SMT) isKapasitasPenuh = true;
-            if(currentUser.role === 'PS' && activeHeadcounts.ps >= MAX_PS) isKapasitasPenuh = true;
+            if(bt_currentUser.role === 'SMT' && bt_activeHeadcounts.smt >= BT_MAX_SMT) isKapasitasPenuh = true;
+            if(bt_currentUser.role === 'PS' && bt_activeHeadcounts.ps >= BT_MAX_PS) isKapasitasPenuh = true;
 
             if(isKapasitasPenuh) {
                 panel.innerHTML = `
@@ -652,15 +903,15 @@
                 return;
             }
             
-            if(userQuotaStatus.sisaWaktuTotal <= 0) {
+            if(bt_userQuotaStatus.sisaWaktuTotal <= 0) {
                 panel.innerHTML = `<span class="text-red-600 font-bold"><i class="fa-solid fa-ban"></i> Saldo Waktu 100 Menit hari ini habis!</span>
-                <p class="text-sm text-red-500 mt-1">Anda sudah menggunakan ${userQuotaStatus.totalUsedTime} menit. Gunakan Darurat jika perlu.</p>`;
+                <p class="text-sm text-red-500 mt-1">Anda sudah menggunakan ${bt_userQuotaStatus.totalUsedTime} menit. Gunakan Darurat jika perlu.</p>`;
                 return;
             }
 
-            let infoWaktuText = `<div class="text-sm mt-1 text-blue-700">Saldo Tersedia: <b>${userQuotaStatus.sisaWaktuTotal}m</b> (Dari ${DAILY_TIME_POOL}m)</div>`;
-            infoWaktuText += `<div class="text-sm text-blue-700">Durasi Maks Sesi Ini: <b>${userQuotaStatus.jatahSesiIni}m</b></div>`;
-            infoWaktuText += `<div class="text-xs text-blue-500 italic mt-1">*Anda telah beristirahat ${userQuotaStatus.breakCount} kali (Total ${userQuotaStatus.totalUsedTime}m) hari ini.</div>`;
+            let infoWaktuText = `<div class="text-sm mt-1 text-blue-700">Saldo Tersedia: <b>${bt_userQuotaStatus.sisaWaktuTotal}m</b> (Dari ${BT_DAILY_TIME_POOL}m)</div>`;
+            infoWaktuText += `<div class="text-sm text-blue-700">Durasi Maks Sesi Ini: <b>${bt_userQuotaStatus.jatahSesiIni}m</b></div>`;
+            infoWaktuText += `<div class="text-xs text-blue-500 italic mt-1">*Anda telah beristirahat ${bt_userQuotaStatus.breakCount} kali (Total ${bt_userQuotaStatus.totalUsedTime}m) hari ini.</div>`;
 
             panel.innerHTML = `
                 <div class="flex items-start text-blue-800">
@@ -673,63 +924,63 @@
             btnSubmit.disabled = false; btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
         }
 
-        // ==========================================
-        // LOGIKA WAKTU & SUBMIT
-        // ==========================================
-        function getCurrentTimeStr() {
+        function bt_getCurrentTimeStr() {
             const now = new Date();
             return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
         }
 
-        function calculateDeadline(startTimeStr, jatahMenit) {
+        function bt_calculateDeadline(startTimeStr, jatahMenit) {
             const [hours, minutes] = startTimeStr.split(':').map(Number);
             const date = new Date();
             date.setHours(hours); date.setMinutes(minutes + parseInt(jatahMenit));
             return String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0');
         }
 
-        function calculateDurationInMinutes(start, end) {
-            start = formatTimeDisplay(start);
-            end = formatTimeDisplay(end);
+        function bt_calculateDurationInMinutes(start, end) {
+            start = bt_formatTimeDisplay(start);
+            end = bt_formatTimeDisplay(end);
             const d1 = new Date(`01/01/2000 ${start}`);
             let d2 = new Date(`01/01/2000 ${end}`);
             if (d2 < d1) d2 = new Date(`01/02/2000 ${end}`); 
             return Math.round((d2.getTime() - d1.getTime()) / 60000);
         }
 
-        document.getElementById('formIzin').addEventListener('submit', function(e) {
+        // ==========================================
+        // SUBMIT PENGAJUAN IZIN KELUAR
+        // ==========================================
+        document.getElementById('bt_formIzin').addEventListener('submit', function(e) {
             e.preventDefault();
-            updateHeadcounts();
-            checkQuotaAndUpdateUI();
+            bt_updateHeadcounts();
+            bt_checkQuotaAndUpdateUI();
             
-            const btnSubmit = document.getElementById('btnSubmit');
+            const btnSubmit = document.getElementById('bt_btnSubmit');
             if(btnSubmit.disabled) return;
 
-            const isDarurat = document.getElementById('isDarurat').checked;
+            const isDarurat = document.getElementById('bt_isDarurat').checked;
             let statusTujuan = isDarurat ? 'Menunggu Persetujuan MGR' : 'Menunggu Persetujuan PS';
-            let durasiFinal = userQuotaStatus.jatahSesiIni;
+            let durasiFinal = bt_userQuotaStatus.jatahSesiIni;
 
             if(isDarurat) {
-                const inputWaktu = document.getElementById('waktuDarurat').value;
+                const inputWaktu = document.getElementById('bt_waktuDarurat').value;
                 if(inputWaktu) durasiFinal = parseInt(inputWaktu);
             }
 
-            if(currentUser.role === 'MGR') {
+            if(bt_currentUser.role === 'MGR') {
                 statusTujuan = 'Aktif (Sedang Istirahat)';
-                durasiFinal = MAX_SESSION_TIME; 
+                durasiFinal = BT_MAX_SESSION_TIME; 
             }
 
             const dataBaru = {
                 id: Date.now().toString(),
-                tanggal: getTodayString(), 
-                nik: currentUser.nik,
-                nama: currentUser.nama,
-                role: currentUser.role, 
-                departemen: currentUser.departemen,
-                alasan: document.getElementById('alasan').value,
-                jamMulai: currentUser.role === 'MGR' ? getCurrentTimeStr() : '-',
-                batasKembali: currentUser.role === 'MGR' ? calculateDeadline(getCurrentTimeStr(), durasiFinal) : '-',
-                timestampMulai: currentUser.role === 'MGR' ? Date.now() : null,
+                tanggal: bt_getTodayString(), 
+                nik: bt_currentUser.nik,
+                nama: bt_currentUser.nama,
+                role: bt_currentUser.role, 
+                departemen: bt_currentUser.departemen,
+                alasan: document.getElementById('bt_alasan').value,
+                jamMulai: bt_currentUser.role === 'MGR' ? bt_getCurrentTimeStr() : '-',
+                batasKembali: bt_currentUser.role === 'MGR' ? bt_calculateDeadline(bt_getCurrentTimeStr(), durasiFinal) : '-',
+                timestampMulai: bt_currentUser.role === 'MGR' ? Date.now() : null,
                 jatahWaktu: durasiFinal, 
                 isDarurat: isDarurat,
                 jamKembali: null,
@@ -739,100 +990,140 @@
                 actionBy: "-" 
             };
 
-            let dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            let dataIzin = JSON.parse(localStorage.getItem(BT_STORAGE_KEY)) || [];
             dataIzin.unshift(dataBaru);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(dataIzin));
-            sendToGoogleSheets(dataBaru);
+            localStorage.setItem(BT_STORAGE_KEY, JSON.stringify(dataIzin));
+            bt_sendToGoogleSheets(dataBaru);
 
-            document.getElementById('formIzin').reset();
-            document.getElementById('isDarurat').checked = false;
-            toggleDaruratMode();
+            document.getElementById('bt_formIzin').reset();
+            document.getElementById('bt_isDarurat').checked = false;
+            bt_toggleDaruratMode();
             
-            if(currentUser.role === 'MGR') showNotification(`Izin Anda otomatis aktif.`);
-            else showNotification(`Berhasil diajukan. Menunggu persetujuan.`);
+            if(bt_currentUser.role === 'MGR') bt_showNotification(`Izin Anda otomatis aktif.`);
+            else bt_showNotification(`Berhasil diajukan. Menunggu persetujuan.`);
             
-            updateHeadcounts();
-            checkQuotaAndUpdateUI(); 
+            bt_updateHeadcounts();
+            bt_checkQuotaAndUpdateUI(); 
         });
 
         // ==========================================
-        // FUNGSI OTORITAS APPROVAL
+        // FUNGSI OTORITAS: PERSETUJUAN KELUAR
         // ==========================================
-        function aksiApprove(id, allowedRole) {
-            if(currentUser.role !== allowedRole) return;
-            
-            let dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        function bt_aksiApprove(id, allowedRole) {
+            if(bt_currentUser.role !== allowedRole) return;
+            let dataIzin = JSON.parse(localStorage.getItem(BT_STORAGE_KEY)) || [];
             const index = dataIzin.findIndex(item => item.id === id);
-            
             if (index !== -1) {
                 const item = dataIzin[index];
-
-                if(item.nik === currentUser.nik) {
-                    showNotification("Akses ditolak! Anda tidak bisa menyetujui izin Anda sendiri.", "error"); return;
+                if(item.nik === bt_currentUser.nik) {
+                    bt_showNotification("Akses ditolak! Anda tidak bisa menyetujui izin Anda sendiri.", "error"); return;
                 }
-
-                updateHeadcounts();
+                bt_updateHeadcounts();
                 if(!item.isDarurat) {
-                    if(item.role === 'SMT' && activeHeadcounts.smt >= MAX_SMT) {
-                        showNotification("Gagal! Slot SMT saat ini sudah penuh (4/4)!", "error"); return;
+                    if(item.role === 'SMT' && bt_activeHeadcounts.smt >= BT_MAX_SMT) {
+                        bt_showNotification("Gagal! Slot SMT saat ini sudah penuh (4/4)!", "error"); return;
                     }
-                    if(item.role === 'PS' && activeHeadcounts.ps >= MAX_PS) {
-                        showNotification("Gagal! Slot PS saat ini sudah penuh (3/3)!", "error"); return;
+                    if(item.role === 'PS' && bt_activeHeadcounts.ps >= BT_MAX_PS) {
+                        bt_showNotification("Gagal! Slot PS saat ini sudah penuh (3/3)!", "error"); return;
                     }
                 }
-
-                const jamMulai = getCurrentTimeStr();
-                const batas = calculateDeadline(jamMulai, item.jatahWaktu);
+                const jamMulai = bt_getCurrentTimeStr();
+                const batas = bt_calculateDeadline(jamMulai, item.jatahWaktu);
 
                 item.status = 'Aktif (Sedang Istirahat)';
                 item.jamMulai = jamMulai;
                 item.batasKembali = batas;
                 item.timestampMulai = Date.now(); 
-                item.actionBy = currentUser.nama;
+                item.actionBy = bt_currentUser.nama;
 
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(dataIzin));
-                updateHeadcounts();
-                renderTable();
-                sendToGoogleSheets(item);
-                showNotification(`Disetujui! Timer ${item.nama} mulai berjalan.`);
+                localStorage.setItem(BT_STORAGE_KEY, JSON.stringify(dataIzin));
+                bt_updateHeadcounts();
+                bt_renderTable();
+                bt_sendToGoogleSheets(item);
+                bt_showNotification(`Disetujui! Timer ${item.nama} mulai berjalan.`);
             }
         }
 
-        function aksiCancel(id, allowedRole) {
-            if(currentUser.role !== allowedRole && currentUser.role !== 'MGR') return;
+        // ==========================================
+        // FUNGSI OTORITAS: PENOLAKAN KELUAR
+        // ==========================================
+        function bt_aksiCancel(id, allowedRole) {
+            if(bt_currentUser.role !== allowedRole && bt_currentUser.role !== 'MGR') return;
             if(!confirm('Anda yakin ingin membatalkan request ini?')) return;
 
-            let dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            let dataIzin = JSON.parse(localStorage.getItem(BT_STORAGE_KEY)) || [];
             const index = dataIzin.findIndex(item => item.id === id);
-            
             if (index !== -1) {
                 const item = dataIzin[index];
-                if(item.nik === currentUser.nik && currentUser.role !== 'MGR') {
-                    showNotification("Akses ditolak! Pembatalan harus dilakukan pihak lain.", "error"); return;
+                if(item.nik === bt_currentUser.nik && bt_currentUser.role !== 'MGR') {
+                    bt_showNotification("Akses ditolak! Pembatalan harus dilakukan pihak lain.", "error"); return;
                 }
-                
                 item.status = 'Dibatalkan';
-                item.actionBy = currentUser.nama;
+                item.actionBy = bt_currentUser.nama;
 
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(dataIzin));
-                updateHeadcounts();
-                renderTable();
-                if(item.nik === currentUser.nik) checkQuotaAndUpdateUI(); 
-                sendToGoogleSheets(item);
-                showNotification(`Request dibatalkan.`, 'error');
+                localStorage.setItem(BT_STORAGE_KEY, JSON.stringify(dataIzin));
+                bt_updateHeadcounts();
+                bt_renderTable();
+                if(item.nik === bt_currentUser.nik) bt_checkQuotaAndUpdateUI(); 
+                bt_sendToGoogleSheets(item);
+                bt_showNotification(`Request dibatalkan.`, 'error');
             }
         }
 
-        function aksiReturn(id) {
-            let dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        // ==========================================
+        // FUNGSI UMUM: LAPOR KEPULANGAN
+        // ==========================================
+        function bt_aksiReturn(id) {
+            let dataIzin = JSON.parse(localStorage.getItem(BT_STORAGE_KEY)) || [];
+            const index = dataIzin.findIndex(item => item.id === id);
+            if (index !== -1) {
+                const item = dataIzin[index];
+                
+                if(bt_currentUser.role === 'MGR') {
+                    const jamKembaliReal = bt_getCurrentTimeStr();
+                    const durasiAktual = bt_calculateDurationInMinutes(item.jamMulai, jamKembaliReal);
+                    let kelebihan = durasiAktual - item.jatahWaktu;
+                    if(kelebihan < 0) kelebihan = 0; 
+
+                    item.jamKembali = jamKembaliReal;
+                    item.durasiAktual = durasiAktual;
+                    item.kelebihanWaktu = kelebihan;
+                    item.status = kelebihan > 0 ? 'Selesai (Terlambat)' : 'Selesai (Tepat Waktu)';
+                    item.actionBy = bt_currentUser.nama;
+                    bt_showNotification(kelebihan > 0 ? `Tercatat! Terlambat ${kelebihan} menit.` : `Ditutup. Saldo terpotong ${durasiAktual}m.`);
+                } else {
+                    item.status = 'Menunggu Verifikasi Kembali';
+                    item.actionBy = "-";
+                    bt_showNotification(`Laporan diterima. Jam terus berjalan hingga diverifikasi PS.`);
+                }
+
+                localStorage.setItem(BT_STORAGE_KEY, JSON.stringify(dataIzin));
+                bt_updateHeadcounts();
+                bt_renderTable();
+                
+                if(item.nik === bt_currentUser.nik) {
+                    bt_checkQuotaAndUpdateUI();
+                }
+                bt_sendToGoogleSheets(item);
+            }
+        }
+
+        // ==========================================
+        // FUNGSI OTORITAS: VERIFIKASI KEPULANGAN
+        // ==========================================
+        function bt_aksiApproveReturn(id) {
+            if(bt_currentUser.role === 'SMT') return;
+            let dataIzin = JSON.parse(localStorage.getItem(BT_STORAGE_KEY)) || [];
             const index = dataIzin.findIndex(item => item.id === id);
             
             if (index !== -1) {
                 const item = dataIzin[index];
-                
-                const jamKembaliReal = getCurrentTimeStr();
-                const durasiAktual = calculateDurationInMinutes(item.jamMulai, jamKembaliReal);
-                
+                if(item.nik === bt_currentUser.nik && bt_currentUser.role !== 'MGR') {
+                    bt_showNotification("Akses ditolak! Minta PS lain untuk verifikasi.", "error"); return;
+                }
+
+                const jamKembaliReal = bt_getCurrentTimeStr();
+                const durasiAktual = bt_calculateDurationInMinutes(item.jamMulai, jamKembaliReal);
                 let kelebihan = durasiAktual - item.jatahWaktu;
                 if(kelebihan < 0) kelebihan = 0; 
 
@@ -840,33 +1131,56 @@
                 item.durasiAktual = durasiAktual;
                 item.kelebihanWaktu = kelebihan;
                 item.status = kelebihan > 0 ? 'Selesai (Terlambat)' : 'Selesai (Tepat Waktu)';
-                item.actionBy = currentUser.nama;
+                item.actionBy = bt_currentUser.nama;
 
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(dataIzin));
-                updateHeadcounts();
-                renderTable();
-                
-                if(item.nik === currentUser.nik) {
-                    checkQuotaAndUpdateUI();
+                localStorage.setItem(BT_STORAGE_KEY, JSON.stringify(dataIzin));
+                bt_updateHeadcounts();
+                bt_renderTable();
+                bt_sendToGoogleSheets(item);
+                bt_showNotification(`Kepulangan diverifikasi. Waktu dihentikan.`);
+            }
+        }
+
+        // ==========================================
+        // FUNGSI OTORITAS: TOLAK KEPULANGAN
+        // ==========================================
+        function bt_aksiRejectReturn(id) {
+            if(bt_currentUser.role === 'SMT') return;
+            if(!confirm('Tolak kepulangan ini dan kembalikan staf ke status Istirahat Aktif?')) return;
+            
+            let dataIzin = JSON.parse(localStorage.getItem(BT_STORAGE_KEY)) || [];
+            const index = dataIzin.findIndex(item => item.id === id);
+            
+            if (index !== -1) {
+                const item = dataIzin[index];
+                if(item.nik === bt_currentUser.nik && bt_currentUser.role !== 'MGR') {
+                    bt_showNotification("Akses ditolak!", "error"); return;
                 }
+                
+                item.status = 'Aktif (Sedang Istirahat)';
+                item.jamKembali = null;
+                item.durasiAktual = null;
+                item.kelebihanWaktu = 0;
+                item.actionBy = bt_currentUser.nama;
 
-                sendToGoogleSheets(item);
-
-                if(kelebihan > 0) showNotification(`Tercatat! Terlambat ${kelebihan} menit.`, 'error');
-                else showNotification(`Ditutup. Saldo terpotong ${durasiAktual}m.`);
+                localStorage.setItem(BT_STORAGE_KEY, JSON.stringify(dataIzin));
+                bt_updateHeadcounts();
+                bt_renderTable();
+                bt_sendToGoogleSheets(item);
+                bt_showNotification(`Verifikasi ditolak. ${item.nama} kembali Aktif.`, 'error');
             }
         }
 
         // ==========================================
         // RENDER TABEL ADMIN
         // ==========================================
-        function renderTable() {
-            if(!currentUser) return;
-            const tableBody = document.getElementById('tableBody');
-            const emptyState = document.getElementById('emptyState');
-            let dataIzin = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        function bt_renderTable() {
+            if(!bt_currentUser) return;
+            const tableBody = document.getElementById('bt_tableBody');
+            const emptyState = document.getElementById('bt_emptyState');
+            let dataIzin = JSON.parse(localStorage.getItem(BT_STORAGE_KEY)) || [];
             
-            dataIzin = dataIzin.filter(i => isToday(i.tanggal));
+            dataIzin = dataIzin.filter(i => bt_isToday(i.tanggal));
             tableBody.innerHTML = ''; 
 
             if (dataIzin.length === 0) {
@@ -883,6 +1197,7 @@
                         if(item.status === 'Dibatalkan') labelAksi = "Dibatalkan";
                         else if(item.status.includes('Selesai')) labelAksi = "Ditutup";
                         else if(item.status === 'Aktif (Sedang Istirahat)') labelAksi = "Disetujui";
+                        else if(item.status === 'Menunggu Verifikasi Kembali' && item.actionBy !== "-") labelAksi = "Ditolak kembali";
                         
                         auditText = `<div class="text-[11px] text-gray-500 mt-1.5 pt-1.5 border-t border-gray-200 border-dashed">
                                         <i class="fa-solid fa-user-shield text-gray-400"></i> ${labelAksi} oleh: <b>${item.actionBy}</b>
@@ -898,7 +1213,15 @@
                         let timerDisplay = item.timestampMulai ? `<div class="text-sm font-mono text-red-600 font-bold mt-1.5 live-timer bg-red-50 inline-block px-2 py-0.5 rounded border border-red-200 shadow-inner" data-timestamp="${item.timestampMulai}">--:--</div>` : '';
                         statusHTML = `
                             <span class="inline-block bg-blue-100 text-blue-700 py-1 px-2 rounded font-bold text-xs mb-1"><i class="fa-solid fa-person-walking"></i> Sedang Aktif</span>
-                            <div class="text-xs text-gray-600 mt-1">Mulai: <b>${formatTimeDisplay(item.jamMulai)}</b> | Batas: <b class="text-red-600">${formatTimeDisplay(item.batasKembali)}</b></div>
+                            <div class="text-xs text-gray-600 mt-1">Mulai: <b>${bt_formatTimeDisplay(item.jamMulai)}</b> | Batas: <b class="text-red-600">${bt_formatTimeDisplay(item.batasKembali)}</b></div>
+                            ${timerDisplay}
+                            ${auditText}
+                        `;
+                    } else if (item.status === 'Menunggu Verifikasi Kembali') {
+                        let timerDisplay = item.timestampMulai ? `<div class="text-sm font-mono text-purple-600 font-bold mt-1.5 live-timer bg-purple-50 inline-block px-2 py-0.5 rounded border border-purple-200 shadow-inner" data-timestamp="${item.timestampMulai}">--:--</div>` : '';
+                        statusHTML = `
+                            <span class="inline-block bg-purple-100 text-purple-700 py-1 px-2 rounded font-bold text-xs animate-pulse mb-1"><i class="fa-solid fa-clipboard-check"></i> Menunggu Verifikasi</span>
+                            <div class="text-xs text-gray-600 mt-1">Mulai: <b>${bt_formatTimeDisplay(item.jamMulai)}</b> | Batas: <b class="text-red-600">${bt_formatTimeDisplay(item.batasKembali)}</b></div>
                             ${timerDisplay}
                             ${auditText}
                         `;
@@ -908,7 +1231,7 @@
                             <span class="inline-block ${isLate ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'} py-1 px-2 rounded font-bold text-xs mb-1">
                                 ${isLate ? `<i class="fa-solid fa-triangle-exclamation"></i> Terlambat (-${item.kelebihanWaktu}m)` : `<i class="fa-solid fa-check"></i> Tepat Waktu`}
                             </span>
-                            <div class="text-xs text-gray-500 mt-1">Kembali: <b>${formatTimeDisplay(item.jamKembali)}</b> (Sesi ini: ${item.durasiAktual}m)</div>
+                            <div class="text-xs text-gray-500 mt-1">Kembali: <b>${bt_formatTimeDisplay(item.jamKembali)}</b> (Sesi ini: ${item.durasiAktual}m)</div>
                             ${auditText}
                         `;
                     } else {
@@ -919,37 +1242,53 @@
 
                     // --- OTORITAS TOMBOL TABEL ---
                     let aksiHTML = '';
-                    if (currentUser.role === 'SMT') {
+                    if (bt_currentUser.role === 'SMT') {
                         aksiHTML = `<span class="text-xs text-gray-400 italic"><i class="fa-solid fa-lock text-gray-300"></i> Hanya PS/MGR</span>`;
                     } 
-                    else if (currentUser.role === 'PS') {
+                    else if (bt_currentUser.role === 'PS') {
                         if (item.status === 'Menunggu Persetujuan PS') {
-                            if (item.nik !== currentUser.nik) {
+                            if (item.nik !== bt_currentUser.nik) {
                                 aksiHTML = `
                                     <div class="flex justify-center space-x-2">
-                                        <button onclick="aksiApprove('${item.id}', 'PS')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Setujui"><i class="fa-solid fa-check"></i></button>
-                                        <button onclick="aksiCancel('${item.id}', 'PS')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak"><i class="fa-solid fa-xmark"></i></button>
+                                        <button onclick="bt_aksiApprove('${item.id}', 'PS')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Setujui"><i class="fa-solid fa-check"></i></button>
+                                        <button onclick="bt_aksiCancel('${item.id}', 'PS')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak"><i class="fa-solid fa-xmark"></i></button>
                                     </div>`;
                             } else aksiHTML = `<span class="text-xs text-orange-500 italic font-medium"><i class="fa-solid fa-hand"></i> Tunggu PS Lain</span>`;
                         } 
                         else if (item.status === 'Aktif (Sedang Istirahat)') {
-                            if (item.nik !== currentUser.nik) {
-                                aksiHTML = `<div class="flex justify-center space-x-2"><button onclick="aksiReturn('${item.id}')" class="bg-primary hover:bg-secondary text-white px-3 py-1.5 rounded text-sm font-medium shadow-sm"><i class="fa-solid fa-stopwatch mr-1"></i> Kembali</button></div>`;
-                            } else aksiHTML = `<span class="text-xs text-orange-500 italic font-medium"><i class="fa-solid fa-hand"></i> Buka Panel Pribadi</span>`;
-                        } 
+                            if (item.nik !== bt_currentUser.nik) {
+                                // PS bisa force close
+                                aksiHTML = `<div class="flex justify-center space-x-2"><button onclick="bt_aksiApproveReturn('${item.id}')" class="bg-primary hover:bg-secondary text-white px-3 py-1.5 rounded text-sm font-medium shadow-sm" title="Tutup Langsung"><i class="fa-solid fa-stopwatch mr-1"></i> Tutup</button></div>`;
+                            } else aksiHTML = `<span class="text-xs text-orange-500 italic font-medium"><i class="fa-solid fa-hand"></i> Lapor via Panel Pribadi</span>`;
+                        }
+                        else if (item.status === 'Menunggu Verifikasi Kembali') {
+                            if (item.nik !== bt_currentUser.nik) {
+                                aksiHTML = `
+                                    <div class="flex justify-center space-x-2">
+                                        <button onclick="bt_aksiApproveReturn('${item.id}')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Verifikasi Kepulangan"><i class="fa-solid fa-check-double"></i></button>
+                                        <button onclick="bt_aksiRejectReturn('${item.id}')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak (Batal Kembali)"><i class="fa-solid fa-rotate-left"></i></button>
+                                    </div>`;
+                            } else aksiHTML = `<span class="text-xs text-purple-500 italic font-medium"><i class="fa-solid fa-hand"></i> Tunggu PS Lain</span>`;
+                        }
                         else if (item.status === 'Menunggu Persetujuan MGR') {
                              aksiHTML = `<span class="text-xs text-red-500 italic font-medium"><i class="fa-solid fa-lock"></i> Otoritas MGR</span>`;
                         }
                     }
-                    else if (currentUser.role === 'MGR') {
+                    else if (bt_currentUser.role === 'MGR') {
                         if (item.status === 'Menunggu Persetujuan MGR' || item.status === 'Menunggu Persetujuan PS') {
                             aksiHTML = `
                                 <div class="flex justify-center space-x-2">
-                                    <button onclick="aksiApprove('${item.id}', 'MGR')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Setujui (Bypass)"><i class="fa-solid fa-check"></i></button>
-                                    <button onclick="aksiCancel('${item.id}', 'MGR')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak (Bypass)"><i class="fa-solid fa-xmark"></i></button>
+                                    <button onclick="bt_aksiApprove('${item.id}', 'MGR')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Setujui (Bypass)"><i class="fa-solid fa-check"></i></button>
+                                    <button onclick="bt_aksiCancel('${item.id}', 'MGR')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak (Bypass)"><i class="fa-solid fa-xmark"></i></button>
                                 </div>`;
                         } else if (item.status === 'Aktif (Sedang Istirahat)') {
-                            aksiHTML = `<button onclick="aksiReturn('${item.id}')" class="bg-primary hover:bg-secondary text-white px-3 py-1.5 rounded text-sm font-medium shadow-sm"><i class="fa-solid fa-stopwatch mr-1"></i> Tandai Kembali</button>`;
+                            aksiHTML = `<button onclick="bt_aksiReturn('${item.id}')" class="bg-primary hover:bg-secondary text-white px-3 py-1.5 rounded text-sm font-medium shadow-sm"><i class="fa-solid fa-stopwatch mr-1"></i> Tandai Kembali</button>`;
+                        } else if (item.status === 'Menunggu Verifikasi Kembali') {
+                            aksiHTML = `
+                                <div class="flex justify-center space-x-2">
+                                    <button onclick="bt_aksiApproveReturn('${item.id}')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Verifikasi Kepulangan"><i class="fa-solid fa-check-double"></i></button>
+                                    <button onclick="bt_aksiRejectReturn('${item.id}')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak (Batal Kembali)"><i class="fa-solid fa-rotate-left"></i></button>
+                                </div>`;
                         }
                     }
                     if(aksiHTML === '') aksiHTML = `<span class="text-xs text-gray-400 italic">Selesai</span>`;
@@ -1005,29 +1344,327 @@
         // ==========================================
         // UTILITAS UMUM
         // ==========================================
-        function sendToGoogleSheets(data) {
-            if(!SCRIPT_URL || SCRIPT_URL === 'MASUKKAN_URL_GOOGLE_SCRIPT_ANDA_DISINI') return;
-            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).catch(e=>{});
+        function bt_sendToGoogleSheets(data) {
+            if(!BT_SCRIPT_URL || BT_SCRIPT_URL === 'MASUKKAN_URL_GOOGLE_SCRIPT_ANDA_DISINI') return;
+            fetch(BT_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).catch(e=>{});
         }
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.getElementById('btn-formTab').className = "py-2 px-4 text-gray-500 hover:text-primary transition-colors font-semibold";
-            document.getElementById('btn-listTab').className = "py-2 px-4 text-gray-500 hover:text-primary transition-colors font-semibold";
+        function bt_switchTab(tabId) {
+            document.querySelectorAll('.bt-tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById('bt_btn-formTab').className = "py-2 px-4 text-gray-500 hover:text-primary transition-colors font-semibold";
+            document.getElementById('bt_btn-listTab').className = "py-2 px-4 text-gray-500 hover:text-primary transition-colors font-semibold";
             document.getElementById(tabId).classList.add('active');
-            document.getElementById('btn-' + tabId).className = "py-2 px-4 text-primary border-b-2 border-primary font-semibold transition-colors";
+            document.getElementById('bt_btn-' + tabId.replace('bt_', '')).className = "py-2 px-4 text-primary border-b-2 border-primary font-semibold transition-colors";
             
-            if (tabId === 'listTab') { updateHeadcounts(); renderTable(); }
-            else { updateHeadcounts(); checkQuotaAndUpdateUI(); }
+            if (tabId === 'bt_listTab') { bt_updateHeadcounts(); bt_renderTable(); }
+            else { bt_updateHeadcounts(); bt_checkQuotaAndUpdateUI(); }
         }
 
-        function showNotification(message, type = 'success') {
-            const notif = document.getElementById('notification');
+        function bt_showNotification(message, type = 'success') {
+            const notif = document.getElementById('bt_notification');
             notif.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'} mr-2"></i> ${message}`;
             notif.className = `mb-4 p-4 rounded-md text-white font-medium transition-all duration-300 shadow-md ${type === 'success' ? 'bg-green-600' : 'bg-red-500'}`;
             notif.classList.remove('hidden');
             setTimeout(() => notif.classList.add('hidden'), 4500);
         }
+    </script>
+
+
+    <!-- ========================================================================================= -->
+    <!-- LOGIKA JAVASCRIPT: TABVAULT (LEDGER PEMINJAMAN TAB)                                       -->
+    <!-- ========================================================================================= -->
+    <script>
+        const TV_API_URL = 'https://script.google.com/macros/s/AKfycbz89KiyFCn2PPeiU6O-3dqL33UdinYwq7DYnaUbsrxLpZVT-uBB8NIGqhebPNcc4Kiffw/exec';
+
+        const TV_PESERTA = [
+            { nama: "AMEL", foto: "img/AMEL.jpg" }, { nama: "AMIN", foto: "img/AMIN.jpg" }, { nama: "DIVAN", foto: "img/DIVAN.jpg" },
+            { nama: "ERNI", foto: "img/ERNI.jpg" }, { nama: "EVAN", foto: "img/EVAN.jpg" }, { nama: "FADLI", foto: "img/FADLI.jpg" },
+            { nama: "HANA", foto: "img/HANA.jpg" }, { nama: "ICHA", foto: "img/ICHA.jpg" }, { nama: "IRFAN", foto: "img/IRFAN.jpg" },
+            { nama: "ILHAM", foto: "img/ILHAM.jpg" }, { nama: "INDRI", foto: "img/INDRI.jpg" }, { nama: "JEANNET", foto: "img/JEANNET.jpg" },
+            { nama: "KIKI", foto: "img/KIKI.jpg" }, { nama: "MELIN", foto: "img/MELIN.jpg" }, { nama: "MIRNA", foto: "img/MIRNA.jpg" },
+            { nama: "NANDA", foto: "img/NANDA.jpg" }, { nama: "NAYA", foto: "img/NAYA.jpg" }, { nama: "NIA", foto: "img/NIA.jpg" },
+            { nama: "RIDWAN", foto: "img/RIDWAN.jpg" }, { nama: "RIKI", foto: "img/RIKI.jpg" }, { nama: "SABRINA", foto: "img/SABRINA.jpg" },
+            { nama: "WULAN", foto: "img/WULAN.jpg" }, { nama: "YAYA", foto: "img/YAYA.jpg" }, { nama: "YUSUF", foto: "img/YUSUF.jpg" }
+        ];
+
+        const TV_FOTO_BY_NAMA = Object.fromEntries(TV_PESERTA.map(p => [p.nama, p.foto]));
+
+        Object.values(TV_FOTO_BY_NAMA).forEach(src => { const img = new Image(); img.src = src; });
+
+        const TV_DAFTAR_TAB = ['TAB-1','TAB-2','TAB-3','TAB-4','TAB-5','TAB-6','TAB-7','TAB-8','TAB-9','TAB-10','TAB-11','TAB-12','TAB-13','TAB-14','TAB-15','TAB-16','TAB-17','TAB-18','TAB-19','TAB-20','TAB-21','TAB-22','TAB-23','TAB-24','TAB-25'];
+        const TV_DAFTAR_SPV = ['AMIN','ASSYIFA','BILLY','DIVA','ENI','GHINA','HANS','LINDA','LUCKI','OZZY','PRASS','RIZKI','TAKIM','UBAI','WAYUDDIN','ZAHRA','ZAINUL'];
+
+        const tv_tableBody = document.getElementById('tv_tableBody');
+        const tv_toast = document.getElementById('tv_toast');
+        const tv_configBanner = document.getElementById('tv_configBanner');
+        const tv_namaSelect = document.getElementById('tv_nama');
+        const tv_tabSelect = document.getElementById('tv_nomorTab');
+        const tv_submitBtn = document.getElementById('tv_submitBtn');
+        const tv_spvSelect = document.getElementById('tv_spvSelect');
+        const tv_returnModal = document.getElementById('tv_returnModal');
+        const tv_deleteModal = document.getElementById('tv_deleteModal');
+        const tv_deletePasswordInput = document.getElementById('tv_deletePassword');
+        const tv_deleteError = document.getElementById('tv_deleteError');
+        
+        let tv_allData = [];
+        let tv_lastDataHash = "";
+        let tv_pendingReturnId = null;
+        let tv_pendingDeleteId = null;
+
+        if (!TV_API_URL || TV_API_URL.includes('GANTI_DENGAN')) {
+            tv_configBanner.style.display = 'block';
+        }
+
+        function tv_populateSelects(){
+            TV_PESERTA.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.nama; opt.textContent = p.nama;
+                tv_namaSelect.appendChild(opt);
+            });
+            TV_DAFTAR_SPV.forEach(nama => {
+                const opt = document.createElement('option');
+                opt.value = nama; opt.textContent = nama;
+                tv_spvSelect.appendChild(opt);
+            });
+            tv_updateTabOptions([]);
+        }
+        tv_populateSelects();
+
+        function tv_updateTabOptions(data){
+            const previousValue = tv_tabSelect.value;
+            const tabSedangDipinjam = new Set(data.filter(r => !r.kembali).map(r => String(r.nomorTab)));
+            const tabTersedia = TV_DAFTAR_TAB.filter(t => !tabSedangDipinjam.has(t));
+
+            tv_tabSelect.innerHTML = '';
+            const placeholder = document.createElement('option');
+            placeholder.value = ''; placeholder.disabled = true; placeholder.selected = true;
+            placeholder.textContent = tabTersedia.length ? 'Pilih nomor tab…' : 'Semua tab sedang dipinjam';
+            tv_tabSelect.appendChild(placeholder);
+
+            tabTersedia.forEach(tab => {
+                const opt = document.createElement('option');
+                opt.value = tab; opt.textContent = tab;
+                tv_tabSelect.appendChild(opt);
+            });
+
+            if (previousValue && tabTersedia.includes(previousValue)) {
+                tv_tabSelect.value = previousValue;
+            }
+
+            const adaTabTersedia = tabTersedia.length > 0;
+            tv_tabSelect.disabled = !adaTabTersedia;
+            tv_submitBtn.disabled = !adaTabTersedia;
+            tv_submitBtn.textContent = adaTabTersedia ? 'Pinjamkan →' : 'Semua tab dipinjam';
+        }
+
+        function tv_showToast(msg){
+            tv_toast.textContent = msg;
+            tv_toast.classList.add('show');
+            setTimeout(()=> tv_toast.classList.remove('show'), 2600);
+        }
+
+        function tv_fmtDate(iso){
+            if(!iso) return '–';
+            const d = new Date(iso);
+            return d.toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric'}) + ' · ' + d.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
+        }
+
+        function tv_renderStats(data){
+            const total = data.length;
+            const out = data.filter(r => !r.kembali).length;
+            const inn = total - out;
+            document.getElementById('tv_statTotal').textContent = total;
+            document.getElementById('tv_statOut').textContent = out;
+            document.getElementById('tv_statIn').textContent = inn;
+        }
+
+        function tv_renderTable(data){
+            if(!data.length){
+                tv_tableBody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="glyph">◇</div>Ledger masih kosong.</div></td></tr>`;
+                return;
+            }
+            tv_tableBody.innerHTML = data.map(r => {
+                const foto = TV_FOTO_BY_NAMA[r.nama];
+                const fotoTag = foto ? `<img class="peminjam-foto" src="${foto}" loading="eager" alt="${tv_escapeHtml(r.nama)}" onerror="this.style.display='none'">` : "";      
+                return `
+                <tr>
+                    <td data-label="Nama"><div class="peminjam-cell">${fotoTag}<strong>${tv_escapeHtml(r.nama)}</strong></div></td>
+                    <td data-label="Nomor Tab"><span class="nomor-tab">${tv_escapeHtml(r.nomorTab)}</span></td>
+                    <td data-label="Peminjaman"><span class="tanggal">${tv_fmtDate(r.peminjaman)}</span></td>
+                    <td data-label="Kembali"><span class="tanggal">${r.kembali ? tv_fmtDate(r.kembali) : '—'}</span></td>
+                    <td data-label="SPV Penerima">${r.spv ? tv_escapeHtml(r.spv) : '—'}</td>
+                    <td data-label="Status">
+                    ${r.kembali ? `<span class="stamp kembali">Kembali</span>` : `<span class="stamp dipinjam">Dipinjam</span>`}
+                    </td>
+                    <td data-label="Aksi" style="text-align:right;">
+                    ${!r.kembali ? `<button class="btn-return" onclick="tv_markReturn('${r.id}')">Tandai Kembali</button>` : ''}
+                    <button class="btn-delete" onclick="tv_markDelete('${r.id}')" title="Hapus entri">✕</button>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function tv_escapeHtml(s){
+            return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        async function tv_loadData(){
+            if(document.getElementById('appContainer-tabvault').style.display === 'none') return;
+            try{
+                const res = await fetch(TV_API_URL + '?action=list');
+                const json = await res.json();
+                if(json.success){
+                    const newHash = JSON.stringify(json.data);
+                    if(newHash !== tv_lastDataHash){
+                        tv_lastDataHash = newHash;
+                        tv_allData = json.data;
+                        tv_renderStats(tv_allData);
+                        tv_applyFilters();
+                        tv_updateTabOptions(tv_allData);
+                    }
+                } else {
+                    tv_showToast('Gagal memuat data: ' + json.error);
+                }
+            } catch(err){
+                tv_tableBody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="glyph">⚠</div>Tidak bisa terhubung ke API Tabvault.</div></td></tr>`;
+            }
+        }
+
+        async function tv_postAction(payload){
+            const res = await fetch(TV_API_URL, {
+                method: 'POST',
+                headers: {'Content-Type':'text/plain;charset=utf-8'},
+                body: JSON.stringify(payload)
+            });
+            return res.json();
+        }
+
+        document.getElementById('tv_borrowForm').addEventListener('submit', async (e)=>{
+            e.preventDefault();
+            const nama = tv_namaSelect.value;
+            const nomorTab = tv_tabSelect.value;
+            if(!nama || !nomorTab) return;
+
+            const sudahDipinjam = tv_allData.some(r => !r.kembali && String(r.nomorTab) === nomorTab);
+            if(sudahDipinjam){
+                tv_showToast(`${nomorTab} baru saja dipinjam orang lain.`);
+                await tv_loadData();
+                return;
+            }
+
+            tv_submitBtn.disabled = true; tv_submitBtn.textContent = 'Menyimpan…';
+            try{
+                const json = await tv_postAction({action:'borrow', nama, nomorTab});
+                if(json.success){
+                    tv_showToast(`Tercatat: ${nama} meminjam ${nomorTab}`);
+                    document.getElementById('tv_borrowForm').reset();
+                    await tv_loadData();
+                } else {
+                    tv_showToast('Gagal: ' + json.error);
+                }
+            } catch(err){
+                tv_showToast('Terjadi kesalahan koneksi.');
+            }
+            tv_submitBtn.disabled = false;
+            tv_submitBtn.textContent = 'Pinjamkan →';
+            tv_updateTabOptions(tv_allData);
+        });
+
+        function tv_markReturn(id){
+            tv_pendingReturnId = id;
+            tv_spvSelect.value = '';
+            tv_returnModal.classList.add('show');
+        }
+
+        function tv_closeReturnModal(){
+            tv_returnModal.classList.remove('show');
+            tv_pendingReturnId = null;
+        }
+
+        async function tv_confirmReturn(){
+            const spv = tv_spvSelect.value;
+            if(!spv) return tv_showToast('Pilih SPV terlebih dahulu.');
+            try{
+                const json = await tv_postAction({action:'return', id: tv_pendingReturnId, spv});
+                if(json.success){
+                    tv_showToast('Ditandai kembali, diterima oleh ' + spv);
+                    tv_closeReturnModal();
+                    tv_loadData();
+                } else {
+                    tv_showToast('Gagal: ' + json.error);
+                }
+            } catch(err){ tv_showToast('Terjadi kesalahan koneksi.'); }
+        }
+
+        tv_returnModal.addEventListener('click', (e)=>{ if(e.target === tv_returnModal) tv_closeReturnModal(); });
+
+        function tv_markDelete(id){
+            tv_pendingDeleteId = id;
+            tv_deletePasswordInput.value = '';
+            tv_deleteError.textContent = '';
+            tv_deleteModal.classList.add('show');
+            setTimeout(()=> tv_deletePasswordInput.focus(), 50);
+        }
+
+        function tv_closeDeleteModal(){
+            tv_deleteModal.classList.remove('show');
+            tv_pendingDeleteId = null;
+        }
+
+        async function tv_confirmDelete(){
+            const password = tv_deletePasswordInput.value;
+            if(!password) return tv_deleteError.textContent = 'Kata sandi wajib diisi.';
+            try{
+                const json = await tv_postAction({action:'delete', id: tv_pendingDeleteId, password});
+                if(json.success){
+                    tv_showToast('Entri dihapus.');
+                    tv_closeDeleteModal();
+                    tv_loadData();
+                } else {
+                    tv_deleteError.textContent = json.error || 'Gagal menghapus entri.';
+                }
+            } catch(err){
+                tv_deleteError.textContent = 'Terjadi kesalahan koneksi.';
+            }
+        }
+
+        tv_deleteModal.addEventListener('click', (e)=>{ if(e.target === tv_deleteModal) tv_closeDeleteModal(); });
+        tv_deletePasswordInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') tv_confirmDelete(); });
+
+        const tv_dateFilterInput = document.getElementById('tv_dateFilter');
+        const tv_clearDateFilterBtn = document.getElementById('tv_clearDateFilter');
+
+        function tv_isSameLocalDay(isoString, ymd){
+            if(!isoString || !ymd) return false;
+            const d = new Date(isoString);
+            const localYmd = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+            return localYmd === ymd;
+        }
+
+        function tv_applyFilters(){
+            const q = document.getElementById('tv_searchInput').value.toLowerCase();
+            const tanggal = tv_dateFilterInput.value; 
+
+            tv_clearDateFilterBtn.style.display = tanggal ? 'inline-block' : 'none';
+
+            const filtered = tv_allData.filter(r => {
+                const cocokTeks = !q || r.nama.toLowerCase().includes(q) || String(r.nomorTab).toLowerCase().includes(q);
+                const cocokTanggal = !tanggal || tv_isSameLocalDay(r.peminjaman, tanggal);
+                return cocokTeks && cocokTanggal;
+            });
+
+            tv_renderTable(filtered);
+        }
+
+        document.getElementById('tv_searchInput').addEventListener('input', tv_applyFilters);
+        tv_dateFilterInput.addEventListener('change', tv_applyFilters);
+        tv_clearDateFilterBtn.addEventListener('click', ()=>{
+            tv_dateFilterInput.value = '';
+            tv_applyFilters();
+        });
+
+        setInterval(tv_loadData, 15000);
     </script>
 </body>
 </html>
