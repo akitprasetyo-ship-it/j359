@@ -6,12 +6,12 @@
     <title>Informa Apps - Bedroom Department</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Playfair+Display:wght@600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Google+Sans+Text:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = { theme: { extend: { colors: { primary: '#2563eb', secondary: '#1e40af', dark: '#0f172a' } } } }
+        tailwind.config = { theme: { extend: { colors: { primary: '#005BAC', secondary: '#00427F', dark: '#002B5C', informa: '#0072CE' }, fontFamily: { sans: ['Google Sans Text', 'Google Sans', 'Arial', 'sans-serif'] } } } }
     </script>
     
     <style>
@@ -24,8 +24,8 @@
         .spin-slow { animation: spin 3s linear infinite; }
 
         .tabvault-container {
-            --bg:#EAF4FF; --panel:#FFFFFF; --panel-2:#F1F8FF; --border:#D7E7F7;
-            --gold:#3B82C4; --gold-soft:#8FC1EA; --cream:#1F2E3D; --muted:#6B84A0;
+            --bg:#EEF6FC; --panel:#FFFFFF; --panel-2:#F5FAFE; --border:#D5E6F3;
+            --gold:#005BAC; --gold-soft:#78B7E5; --cream:#17324D; --muted:#607D98;
             --sage:#3E9A6D; --sage-soft:rgba(62,154,109,0.12); --copper:#C07A3E;
             --copper-soft:rgba(192,122,62,0.12); --danger:#C0392B; --danger-soft:rgba(192,57,43,0.10);
             --radius:14px; --shadow: 0 16px 40px -18px rgba(31,46,61,0.25);
@@ -33,7 +33,7 @@
                         radial-gradient(900px 500px at 100% 0%, rgba(59,130,196,0.07), transparent 55%),
                         var(--bg);
             color: var(--cream);
-            font-family: 'Manrope', sans-serif;
+            font-family:'Google Sans Text','Google Sans',Arial,sans-serif;
             min-height: calc(100vh - 60px);
             -webkit-font-smoothing: antialiased;
             text-align: left;
@@ -43,25 +43,25 @@
         
         .tabvault-container header { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; border-bottom:1px solid var(--border); padding-bottom:28px; margin-bottom:44px; flex-wrap:wrap; }
         .tabvault-container .brand-mark { display:flex; align-items:center; gap:14px; }
-        .tabvault-container .seal { height:46px; width:auto; max-width:150px; border-radius:8px; border:1.5px solid var(--gold); display:flex;align-items:center;justify-content:center; font-family:'Fraunces', serif; font-size:15px;color:var(--gold); flex-shrink:0; position:relative; overflow:hidden; background:var(--panel-2); padding:2px; }
+        .tabvault-container .seal { height:46px; width:auto; max-width:150px; border-radius:8px; border:1.5px solid var(--gold); display:flex;align-items:center;justify-content:center; font-family:'Google Sans','Google Sans Text',Arial,sans-serif; font-size:15px;color:var(--gold); flex-shrink:0; position:relative; overflow:hidden; background:var(--panel-2); padding:2px; }
         .tabvault-container .seal img { height:100%; width:auto; max-width:100%; object-fit:contain; border-radius:6px; display:block; }
         .tabvault-container .seal::before { content:''; position:absolute;inset:4px; border:1px dashed var(--gold-soft); border-radius:4px; pointer-events:none; }
-        .tabvault-container h1 { font-family:'Playfair Display', serif; font-weight:700; font-size:32px; letter-spacing:0.5px; margin:0; color:var(--cream); }
+        .tabvault-container h1 { font-family:'Google Sans','Google Sans Text',Arial,sans-serif; font-weight:700; font-size:32px; letter-spacing:0.5px; margin:0; color:var(--cream); }
         .tabvault-container .eyebrow { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin:0 0 6px; }
-        .tabvault-container .tagline { font-size:13.5px; color:var(--muted); max-width:360px; text-align:right; line-height:1.5; font-style:italic; font-family:'Fraunces', serif; }
+        .tabvault-container .tagline { font-size:13.5px; color:var(--muted); max-width:360px; text-align:right; line-height:1.5; font-style:italic; font-family:'Google Sans','Google Sans Text',Arial,sans-serif; }
         
         .tabvault-container .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:46px; }
         .tabvault-container .stat-card { background:linear-gradient(160deg, var(--panel), var(--panel-2)); border:1px solid var(--border); border-radius:var(--radius); padding:24px 26px; position:relative; overflow:hidden; }
         .tabvault-container .stat-card::after { content:''; position:absolute; right:-30px;top:-30px; width:110px;height:110px; border-radius:50%; border:1px solid rgba(201,166,75,0.12); }
         .tabvault-container .stat-label { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
-        .tabvault-container .stat-value { font-family:'Fraunces', serif; font-size:44px; font-weight:600; margin:0; line-height:1; }
+        .tabvault-container .stat-value { font-family:'Google Sans','Google Sans Text',Arial,sans-serif; font-size:44px; font-weight:600; margin:0; line-height:1; }
         .tabvault-container .stat-value.gold {color:var(--gold);}
         .tabvault-container .stat-value.sage {color:var(--sage);}
         .tabvault-container .stat-value.copper {color:var(--copper);}
         .tabvault-container .stat-foot {font-size:12px;color:var(--muted);margin-top:10px;}
         
         .tabvault-container .panel { background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:28px 30px; margin-bottom:36px; box-shadow:var(--shadow); }
-        .tabvault-container .panel h2 { font-family:'Fraunces', serif; font-size:19px; font-weight:600; margin:0 0 4px; color:var(--cream); }
+        .tabvault-container .panel h2 { font-family:'Google Sans','Google Sans Text',Arial,sans-serif; font-size:19px; font-weight:600; margin:0 0 4px; color:var(--cream); }
         .tabvault-container .panel .sub {font-size:12.5px;color:var(--muted);margin:0 0 20px;}
         .tabvault-container form { display:grid; grid-template-columns:1.3fr 1fr auto; gap:14px; align-items:end; margin:0; }
         .tabvault-container label { display:block; font-size:11px; letter-spacing:1.4px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
@@ -79,7 +79,7 @@
         .tabvault-container .btn-danger:hover {filter:brightness(1.07);}
         
         .tabvault-container .ledger-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px; }
-        .tabvault-container .ledger-head h2 { font-family:'Fraunces', serif; font-size:19px; margin:0; }
+        .tabvault-container .ledger-head h2 { font-family:'Google Sans','Google Sans Text',Arial,sans-serif; font-size:19px; margin:0; }
         .tabvault-container .search-box input { background:var(--panel); width:220px; }
         .tabvault-container table { width:100%; border-collapse:collapse; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
         .tabvault-container thead th { text-align:left; font-size:10.5px; letter-spacing:1.6px; text-transform:uppercase; color:var(--muted); padding:16px 20px; border-bottom:1px solid var(--border); font-weight:600; }
@@ -99,7 +99,7 @@
         .tabvault-container .btn-delete { background:transparent; border:1px solid transparent; color:var(--muted); font-size:16px; padding:4px 8px; }
         .tabvault-container .btn-delete:hover {color:var(--danger); border-color:rgba(178,81,70,0.4);}
         .tabvault-container .empty-state { text-align:center; padding:60px 20px; color:var(--muted); }
-        .tabvault-container .empty-state .glyph { font-family:'Fraunces', serif; font-size:30px; color:var(--gold-soft); margin-bottom:10px; }
+        .tabvault-container .empty-state .glyph { font-family:'Google Sans','Google Sans Text',Arial,sans-serif; font-size:30px; color:var(--gold-soft); margin-bottom:10px; }
         
         .tabvault-container .toast { position:fixed; bottom:28px;left:50%; transform:translateX(-50%) translateY(20px); background:var(--panel-2); border:1px solid var(--gold); color:var(--cream); padding:13px 22px; border-radius:9px; font-size:13.5px; box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:all .25s ease; z-index:100; }
         .tabvault-container .toast.show {opacity:1; transform:translateX(-50%) translateY(0);}
@@ -109,7 +109,7 @@
         .tabvault-container .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:200; align-items:center; justify-content:center; padding:20px; }
         .tabvault-container .modal-overlay.show {display:flex;}
         .tabvault-container .modal-box { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:26px 28px; width:100%; max-width:320px; box-shadow:var(--shadow); }
-        .tabvault-container .modal-box h3 { font-family:'Fraunces', serif; margin:0 0 6px; color:var(--cream); font-size:19px; }
+        .tabvault-container .modal-box h3 { font-family:'Google Sans','Google Sans Text',Arial,sans-serif; margin:0 0 6px; color:var(--cream); font-size:19px; }
         .tabvault-container .modal-box .sub { font-size:12.5px; color:var(--muted); margin:0 0 16px; }
         .tabvault-container .modal-box label { display:block; font-size:11px; letter-spacing:1.4px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
         .tabvault-container .modal-box select, .tabvault-container .modal-box input[type=password] {margin-bottom:6px;}
@@ -129,12 +129,61 @@
             .tabvault-container tbody td {border:none; padding:6px 0; display:flex; justify-content:space-between; gap:12px;}
             .tabvault-container tbody td::before {content:attr(data-label); color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:1px;}
         }
+
+        /* INFORMA PROFESSIONAL THEME */
+        :root { --informa-blue:#005BAC; --informa-deep:#003B71; --informa-sky:#EAF5FC; }
+        html, body, button, input, select, textarea { font-family:'Google Sans Text','Google Sans',Arial,sans-serif !important; }
+        body { background:#F3F7FA; }
+        #bt_loginView { background:linear-gradient(145deg,#002B5C 0%,#005BAC 62%,#1684D6 100%) !important; }
+        #bt_loginView > div { border:1px solid rgba(255,255,255,.45); box-shadow:0 24px 70px rgba(0,43,92,.32); }
+        #bt_appView nav { background:linear-gradient(100deg,#003B71,#005BAC 65%,#0878C9) !important; }
+        #appContainer-breaktime main { max-width:1280px; }
+        #bt_capacityHeaders > div, #bt_listTab, #bt_formTab { border-color:#DCEAF4 !important; box-shadow:0 10px 30px rgba(0,91,172,.07); }
+        #bt_listTab h2, #bt_formTab h2 { color:#17324D; }
+        #bt_btnRefresh, #bt_btnSubmit { box-shadow:0 8px 18px rgba(0,91,172,.22); }
+        .bt-tab-content { animation:fadeIn .24s ease-out; }
+        #bt_appView main > .flex.space-x-2 { gap:8px; border:0; background:#EAF3F9; padding:6px; border-radius:14px; width:max-content; max-width:100%; }
+        #bt_appView main > .flex.space-x-2 button { border:0 !important; border-radius:10px; padding:10px 16px; }
+        #bt_appView main > .flex.space-x-2 button.text-primary { background:#fff; box-shadow:0 3px 12px rgba(0,91,172,.12); }
+
+        @media (max-width: 720px) {
+            .bg-dark.sticky { justify-content:stretch !important; gap:6px; padding:8px !important; }
+            .bg-dark.sticky > button { flex:1; min-width:0; padding:10px 8px !important; font-size:12px !important; line-height:1.2; white-space:normal; }
+            #bt_appView nav .max-w-7xl { padding-top:12px; padding-bottom:12px; }
+            #bt_appView nav h1 { display:block !important; font-size:16px; }
+            #bt_appView main { padding:16px 12px 32px; }
+            #bt_appView main > .flex.space-x-2 { width:100%; display:grid; grid-template-columns:1fr 1fr; margin-bottom:14px; }
+            #bt_appView main > .flex.space-x-2 button { width:100%; padding:10px 6px; font-size:12px; }
+            #bt_capacityHeaders { grid-template-columns:1fr 1fr !important; gap:8px !important; margin-bottom:14px; }
+            #bt_capacityHeaders > div { padding:12px !important; border-radius:14px; }
+            #bt_capacityHeaders i { font-size:26px !important; }
+            #bt_capacityHeaders p:first-child { font-size:11px !important; line-height:1.25; }
+            #bt_capacityHeaders p[id] { font-size:22px !important; }
+            #bt_listTab { padding:14px !important; border-radius:16px; }
+            #bt_listTab > div:first-child { gap:10px; margin-bottom:12px; padding-bottom:12px; }
+            #bt_listTab h2 { font-size:17px; }
+            #bt_listTab .overflow-x-auto { overflow:visible !important; }
+            #bt_listTab table { min-width:0 !important; display:block; background:transparent; }
+            #bt_listTab thead { display:none; }
+            #bt_listTab tbody { display:grid; gap:12px; }
+            #bt_listTab tbody tr { display:block; background:#fff; border:1px solid #DCEAF4; border-radius:16px; padding:14px; box-shadow:0 7px 22px rgba(0,91,172,.07); }
+            #bt_listTab tbody td { display:block; width:100%; padding:0 !important; border:0; text-align:left !important; }
+            #bt_listTab tbody td + td { margin-top:12px; padding-top:12px !important; border-top:1px solid #E5EEF5; }
+            #bt_listTab tbody td::before { display:block; content:attr(data-label); margin-bottom:6px; color:#71869A; font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+            #bt_listTab tbody td:first-child::before { display:none; }
+            #bt_listTab tbody td:last-child > div { display:grid !important; grid-template-columns:1fr 1fr; gap:8px !important; }
+            #bt_listTab tbody td:last-child button { width:100%; min-height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:7px; padding:9px 10px !important; }
+            #bt_listTab tbody td:last-child > button { width:100%; min-height:42px; border-radius:10px; }
+            .bt-action-label { display:inline !important; font-size:12px; font-weight:700; }
+            #bt_btnRefresh { width:100%; }
+        }
+        @media (min-width:721px) { .bt-action-label { display:none; } }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased">
 
     <!-- MASTER NAVIGATION TABS -->
-    <div class="bg-dark text-white p-3 flex justify-center space-x-2 md:space-x-4 shadow-lg sticky top-0 z-50">
+    <div class="bg-dark text-white p-3 flex justify-center space-x-2 md:space-x-4 shadow-lg sticky top-0 z-50 border-b border-blue-900/40">
         <button onclick="switchMasterApp('breaktime')" id="mbtn-breaktime" class="px-5 py-2.5 rounded-full font-bold text-sm md:text-base bg-primary text-white shadow-md transition-all">
             <i class="fa-solid fa-mug-hot mr-1"></i> Sistem Istirahat
         </button>
@@ -239,7 +288,7 @@
                     </div>
                     
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[900px]">
+                        <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="bg-slate-50 text-slate-600 text-sm uppercase tracking-wider">
                                     <th class="p-4 border-b font-semibold">Karyawan</th>
@@ -1250,8 +1299,8 @@
                             if (item.nik !== bt_currentUser.nik) {
                                 aksiHTML = `
                                     <div class="flex justify-center space-x-2">
-                                        <button onclick="bt_aksiApprove('${item.id}', 'PS')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Setujui"><i class="fa-solid fa-check"></i></button>
-                                        <button onclick="bt_aksiCancel('${item.id}', 'PS')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak"><i class="fa-solid fa-xmark"></i></button>
+                                        <button onclick="bt_aksiApprove('${item.id}', 'PS')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Setujui"><i class="fa-solid fa-check"></i><span class="bt-action-label">Setujui</span></button>
+                                        <button onclick="bt_aksiCancel('${item.id}', 'PS')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak"><i class="fa-solid fa-xmark"></i><span class="bt-action-label">Tolak</span></button>
                                     </div>`;
                             } else aksiHTML = `<span class="text-xs text-orange-500 italic font-medium"><i class="fa-solid fa-hand"></i> Tunggu PS Lain</span>`;
                         } 
@@ -1265,8 +1314,8 @@
                             if (item.nik !== bt_currentUser.nik) {
                                 aksiHTML = `
                                     <div class="flex justify-center space-x-2">
-                                        <button onclick="bt_aksiApproveReturn('${item.id}')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Verifikasi Kepulangan"><i class="fa-solid fa-check-double"></i></button>
-                                        <button onclick="bt_aksiRejectReturn('${item.id}')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak (Batal Kembali)"><i class="fa-solid fa-rotate-left"></i></button>
+                                        <button onclick="bt_aksiApproveReturn('${item.id}')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Verifikasi Kepulangan"><i class="fa-solid fa-check-double"></i><span class="bt-action-label">Verifikasi</span></button>
+                                        <button onclick="bt_aksiRejectReturn('${item.id}')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak (Batal Kembali)"><i class="fa-solid fa-rotate-left"></i><span class="bt-action-label">Tolak</span></button>
                                     </div>`;
                             } else aksiHTML = `<span class="text-xs text-purple-500 italic font-medium"><i class="fa-solid fa-hand"></i> Tunggu PS Lain</span>`;
                         }
@@ -1278,16 +1327,16 @@
                         if (item.status === 'Menunggu Persetujuan MGR' || item.status === 'Menunggu Persetujuan PS') {
                             aksiHTML = `
                                 <div class="flex justify-center space-x-2">
-                                    <button onclick="bt_aksiApprove('${item.id}', 'MGR')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Setujui (Bypass)"><i class="fa-solid fa-check"></i></button>
-                                    <button onclick="bt_aksiCancel('${item.id}', 'MGR')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak (Bypass)"><i class="fa-solid fa-xmark"></i></button>
+                                    <button onclick="bt_aksiApprove('${item.id}', 'MGR')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Setujui (Bypass)"><i class="fa-solid fa-check"></i><span class="bt-action-label">Setujui</span></button>
+                                    <button onclick="bt_aksiCancel('${item.id}', 'MGR')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak (Bypass)"><i class="fa-solid fa-xmark"></i><span class="bt-action-label">Tolak</span></button>
                                 </div>`;
                         } else if (item.status === 'Aktif (Sedang Istirahat)') {
                             aksiHTML = `<button onclick="bt_aksiReturn('${item.id}')" class="bg-primary hover:bg-secondary text-white px-3 py-1.5 rounded text-sm font-medium shadow-sm"><i class="fa-solid fa-stopwatch mr-1"></i> Tandai Kembali</button>`;
                         } else if (item.status === 'Menunggu Verifikasi Kembali') {
                             aksiHTML = `
                                 <div class="flex justify-center space-x-2">
-                                    <button onclick="bt_aksiApproveReturn('${item.id}')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Verifikasi Kepulangan"><i class="fa-solid fa-check-double"></i></button>
-                                    <button onclick="bt_aksiRejectReturn('${item.id}')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak (Batal Kembali)"><i class="fa-solid fa-rotate-left"></i></button>
+                                    <button onclick="bt_aksiApproveReturn('${item.id}')" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded shadow" title="Verifikasi Kepulangan"><i class="fa-solid fa-check-double"></i><span class="bt-action-label">Verifikasi</span></button>
+                                    <button onclick="bt_aksiRejectReturn('${item.id}')" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded shadow" title="Tolak (Batal Kembali)"><i class="fa-solid fa-rotate-left"></i><span class="bt-action-label">Tolak</span></button>
                                 </div>`;
                         }
                     }
@@ -1295,13 +1344,13 @@
 
                     const row = `
                         <tr class="border-b hover:bg-blue-50/30 transition">
-                            <td class="p-4">
+                            <td data-label="Karyawan" class="p-4">
                                 <div class="font-bold text-gray-800 text-base">${item.nama}</div>
                                 <div class="text-xs text-gray-500 mt-0.5"><span class="font-semibold text-primary">${item.role}</span> | ${item.departemen}</div>
                             </td>
-                            <td class="p-4 align-top pt-5">${statusHTML}</td>
-                            <td class="p-4 text-gray-600 font-medium align-top pt-5">${item.alasan}</td>
-                            <td class="p-4 text-center align-top pt-5">${aksiHTML}</td>
+                            <td data-label="Status & Timer" class="p-4 align-top pt-5">${statusHTML}</td>
+                            <td data-label="Alasan" class="p-4 text-gray-600 font-medium align-top pt-5">${item.alasan}</td>
+                            <td data-label="Aksi" class="p-4 text-center align-top pt-5">${aksiHTML}</td>
                         </tr>
                     `;
                     tableBody.innerHTML += row;
